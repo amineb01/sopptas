@@ -57,7 +57,6 @@ router.post('/signup',
       });
     }) },
     function(req, res, next) {
-      console.log(req.body)
       generateToken(req, res)
       .then( token => {
         return res.status(201).json({

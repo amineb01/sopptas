@@ -1,6 +1,6 @@
 var Reclamation = require('../models/Reclamation')
 var upload = require('../helpers/multerConfig')
-var { verifyToken }= require('../middlewares/token')
+var { verifyToken, isCollaboratorToken }= require('../middlewares/token')
 var { setReclamation, getReclamations, getOneReclamation } = require('../middlewares/reclamations')
 
 const reclamationController = (express) => {
@@ -13,9 +13,25 @@ const reclamationController = (express) => {
   router.get('/',
     function(req, res, next) {
       verifyToken(req, res)
-      .then( userId =>{
-        req.headers.id = userId;
+      .then( decodedToken =>{
+        req.headers.id = decodedToken.id;
+        req.headers.role = decodedToken.role;
          next()
+       })
+      .catch( error => {
+        return res.status(401).json({
+          message: error,
+          error: 'invalid token'
+        });
+      })
+      .done()
+    },
+
+    function(req, res, next) {
+      isCollaboratorToken(req, res)
+      .then( result =>{
+        req.headers.id = userId;
+
        })
       .catch( error => {
         return res.status(401).json({
@@ -62,7 +78,7 @@ const reclamationController = (express) => {
     upload.single('image'),
 
     function(req, res, next) {
-      getOneReclamation(req, res)
+      setReclamation(req, res)
       .then( results =>{
         return res.status(201).json({
           message: 'reclamation created',

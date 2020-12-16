@@ -6,8 +6,8 @@ const UserSchema = new Schema({
   name:{ type:String, required:true },
   email: { type:String, required:true },
   password: { type:String, required:true },
-  reclamations: [{ type: Schema.Types.ObjectId, ref: 'Reclamation' }]
-
+  reclamations: [{ type: Schema.Types.ObjectId, ref: 'Reclamation' }],
+  role: { type: String, enum: ['admin', 'restricted', 'citizen'], default: 'citizen' },
 });
 
 UserSchema.path('email').validate(async (value) => {

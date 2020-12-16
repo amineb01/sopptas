@@ -8,21 +8,20 @@ const checkUserByEmail = ( req, res ) => {
   User.findOne({
       email: req.body.email
     })
-    .select('email name password')
+    .select('email name password role')
     .exec()
     .then(user => {
       if(!user){
         deferred.reject("user not found");
       }else{
-        console.log("checkUserByEmail", 'req.body.email')
         req.body.cryptedPassword = user.password
         req.body.id = user._id
+        req.body.role = user.role
         deferred.resolve()
       }
 
     })
     .catch(error => {
-      console.log("error", error)
       deferred.reject(error);
     })
 
