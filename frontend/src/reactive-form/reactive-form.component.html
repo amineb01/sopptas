@@ -1,0 +1,77 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()"  *ngIf="registerForm">
+    <div class="form-row">
+      <div class="form-group col-md-7">
+        <label for="inputEmail4">Email</label>
+        <input formControlName="email"  type="email" class="form-control" id="inputEmail4" placeholder="Email" [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors }">
+        <div *ngIf="f.email.touched && f.email.errors" class="invalid-feedback">
+          <div *ngIf="f.email.errors.required">Email is required</div>
+          <div *ngIf="f.email.errors.email">Email is not valid </div>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputPassword4">Password</label>
+        <input formControlName="password"  type="password" class="form-control" id="inputPassword4" placeholder="Password" [ngClass]="{ 'is-invalid': f.password.touched && f.password.errors }">
+        <div *ngIf="f.password.touched && f.password.errors" class="invalid-feedback">
+          <div *ngIf="f.password.errors.required">Password is required</div>
+          <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputPassword5">Password confirmation</label>
+        <input formControlName="confirmation"  type="password" class="form-control" id="inputPassword5" placeholder="confirmation" [ngClass]="{ 'is-invalid': f.confirmation.touched && f.confirmation.errors }">
+        <div *ngIf="f.confirmation.touched && f.confirmation.errors" class="invalid-feedback">
+          <div *ngIf="f.confirmation.errors.required">Password confirmation is required</div>
+          <div *ngIf="f.confirmation.errors.minlength">Password must be at least 6 characters</div>
+          <div *ngIf="f.confirmation.errors.mustMatch">Password not match</div>
+        </div>
+      </div>
+    <div class="form-group">
+      <label for="inputAddress">Address</label>
+      <input formControlName="address"  type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" [ngClass]="{ 'is-invalid': f.address.touched && f.address.errors }">
+      <div *ngIf="f.address.touched && f.address.errors" class="invalid-feedback">
+        <div *ngIf="f.address.errors.required">Address is required</div>
+        <div *ngIf="f.address.errors.minlength">Address must be at least 6 characters</div>
+      </div>
+    </div>
+   
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">City</label>
+        <input formControlName="city" type="text" class="form-control" id="inputCity" [ngClass]="{ 'is-invalid': f.city.touched && f.city.errors }">
+        <div *ngIf="f.city.touched && f.city.errors" class="invalid-feedback">
+          <div *ngIf="f.city.errors.required">City is required</div>
+          <div *ngIf="f.city.errors.minlength">City must be at least 6 characters</div>
+        </div>  
+      </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputState">State</label>
+        <select formControlName="state" id="inputState" class="form-control" [ngClass]="{ 'is-invalid': f.state.touched && f.state.errors }">
+          <option selected>Tunisie</option>
+          <option>France</option>
+        </select>
+        <div *ngIf="f.state.touched && f.state.errors" class="invalid-feedback">
+          <div *ngIf="f.state.errors.required">State is required</div>
+          <div *ngIf="f.state.errors.minlength">State must be at least 6 characters</div>
+      </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputZip">Zip</label>
+        <input formControlName="zip" type="text" class="form-control" id="inputZip" [ngClass]="{ 'is-invalid': f.zip.touched && f.zip.errors }">
+        <div *ngIf="f.zip.touched && f.zip.errors" class="invalid-feedback">
+          <div *ngIf="f.zip.errors.required">Zip is required</div>
+          <div *ngIf="f.zip.errors.minlength">Zip must be at least 3 characters</div>
+      </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-check">
+        <input formControlName="acceptTerms" class="form-check-input" type="checkbox" id="acceptTerms">
+        <label for="acceptTerms" class="form-check-label">Accept Terms & Conditions</label>
+        <div *ngIf="submitted && f.acceptTerms.errors" class="invalid-feedback">Accept Ts & Cs is required</div>
+      </div>
+    </div>
+    <button-component [type]="'button'" [classes]="'btn-secondary'" (clicked)="onReset($event)" >Cancel</button-component>
+    <button-component [type]="'submit'" [classes]="'btn-primary'" (clicked)="onReset($event)" [isdisabled]='registerForm.invalid' >Sign in</button-component>
+  </form>
+  

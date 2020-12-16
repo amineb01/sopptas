@@ -1,0 +1,54 @@
+@import 'customize-bootstrap.scss'
+@import '../node_modules/bootstrap/scss/bootstrap'
+@import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css'
+.main-container
+  display: flex
+  flex-direction: column
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+
+.is-mobile .side-toolbar
+  position: fixed
+  z-index: 2
+
+h1.app-name
+  margin-left: 8px
+
+.sidenav-container
+  flex: 1
+
+.is-mobile .sidenav-container
+  flex: 1 0 auto
+.nav-spacer
+  flex: 1 1 auto
+
+.app-link
+  cursor: pointer
+
+
+.footer_container
+  position: fixed
+  bottom: 0
+  background-color: red
+  display: block
+  width: 100%
+
+
+
+.content
+  color:  $primary
+  .auth-input
+    border-left: 5px solid $primary
+    min-height: 45px
+    background-color: #f5f7f6
+
+  .custom-control-input
+    color:  $primary
+  .custom-control-input:focus ~ .custom-control-label::before
+      box-shadow: none
+
+  .custom-control-input:active ~ .custom-control-label::before
+      background-color: #fff
