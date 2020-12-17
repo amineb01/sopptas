@@ -1,13 +1,13 @@
-var Zone = require("../models/Zone");
+var Category = require("../models/Category");
 var Q = require("q");
 var deferred;
 
-const setZone = (req) => {
+const setCategory = (req) => {
   deferred = Q.defer();
-  let zone = new Zone({
+  let category = new Category({
     name: req.body.name,
   });
-  zone
+  category
     .save()
     .then((result) => {
       deferred.resolve(result);
@@ -18,14 +18,14 @@ const setZone = (req) => {
   return deferred.promise;
 };
 
-const getZones = (req) => {
+const getCategories = (req) => {
   deferred = Q.defer();
-  Zone.find()
+  Category.find()
     .select("_id name points")
-    .then((zones) => {
+    .then((categories) => {
       deferred.resolve({
-        zones,
-        count: zones.length,
+        categories,
+        count: categories.length,
       });
     })
     .catch((error) => {
@@ -34,9 +34,9 @@ const getZones = (req) => {
   return deferred.promise;
 };
 
-const getZoneById = (req, res) => {
+const getCategoryById = (req, res) => {
   deferred = Q.defer();
-  Zone.findById(req.params.id)
+  Category.findById(req.params.id)
     .then((result) => {
       deferred.resolve(result);
     })
@@ -52,17 +52,17 @@ const update = (req, res) => {
     deferred.reject("Data to update can not be empty!");
     return deferred.promise;
   }
-  Zone.findByIdAndUpdate(req.params.id, req.body, { useFindAndModify: false })
+  Category.findByIdAndUpdate(req.params.id, req.body, { useFindAndModify: false })
     .then((result) => {
       if (!result) {
         deferred.reject(
-          "Cannot update Zone with id= " +
+          "Cannot update Category with id= " +
             req.params.id +
-            " Maybe Zone was not found!"
+            " Maybe Category was not found!"
         );
         return deferred.promise;
       } else {
-        deferred.resolve({ message: "Zone was updated successfully." });
+        deferred.resolve({ message: "Category was updated successfully." });
       }
     })
     .catch((error) => {
@@ -70,18 +70,18 @@ const update = (req, res) => {
     });
   return deferred.promise;
 };
-const deleteZone = (req, res) => {
+const deleteCategory = (req, res) => {
   const id = req.params.id;
   deferred = Q.defer();
-  Zone.findByIdAndRemove(id)
+  Category.findByIdAndRemove(id)
     .then((data) => {
       if (!data) {
         deferred.reject(
-          "Cannot delete Zone with id= " +req.params.id +" Maybe Zone was not found!"
+          "Cannot delete Category with id= " +req.params.id +" Maybe Category was not found!"
         );
         return deferred.promise;
       } else {
-        deferred.resolve({ message: "Zone was deleted successfully." });
+        deferred.resolve({ message: "Category was deleted successfully." });
       }
     })
     .catch((error) => {
@@ -90,4 +90,4 @@ const deleteZone = (req, res) => {
   return deferred.promise;
 };
 
-module.exports = { setZone, getZones, getZoneById, update, deleteZone };
+module.exports = { setCategory, getCategories, getCategoryById, update, deleteCategory };

@@ -1,21 +1,21 @@
-var Zone = require("../models/Zone");
+var Category = require("../models/Category");
 
 var {
-  setZone,
-  getZones,
-  getZoneById,
+  setCategory,
+  getCategories,
+  getCategoryById,
   update,
-  deleteZone,
-} = require("../middlewares/zones");
+  deleteCategory,
+} = require("../middlewares/categories");
 var { verifyToken, isCollaboratorToken } = require("../middlewares/token");
 
-const ZoneController = (express) => {
+const CategoryController = (express) => {
   const router = express.Router();
 
   // middleware that is specific to this router
   router.use((req, res, next) => {
     console.log(
-      "Time to access Zones route: ",
+      "Time to access Categorys route: ",
       new Date().toLocaleDateString("en-US")
     );
     next();
@@ -53,7 +53,7 @@ const ZoneController = (express) => {
         .done();
     },
     function (req, res, next) {
-      setZone(req)
+      setCategory(req)
         .then((result) => {
           return res.status(200).json({
             result: result,
@@ -101,7 +101,7 @@ const ZoneController = (express) => {
         .done();
     },
     function (req, res, next) {
-      getZoneById(req)
+      getCategoryById(req)
         .then((result) => {
           return res.status(200).json({
             result: result,
@@ -149,7 +149,7 @@ const ZoneController = (express) => {
         .done();
     },
     function (req, res, next) {
-      getZones(req)
+      getCategories(req)
         .then((result) => {
           return res.status(200).json({
             result: result,
@@ -245,7 +245,7 @@ const ZoneController = (express) => {
         .done();
     },
     function (req, res, next) {
-      deleteZone(req)
+      deleteCategory(req)
         .then((result) => {
           return res.status(200).json({
             result: result,
@@ -263,4 +263,4 @@ const ZoneController = (express) => {
   return router;
 };
 
-module.exports = ZoneController;
+module.exports = CategoryController;
