@@ -1,0 +1,53 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 img-bg hidden-sm-down " >
+
+    </div>
+    <div class="col-md-6" >
+      <div class="row" style='height: 100vh;'>
+        <div class="col-md-8 offset-md-2 content">
+          <div class="logo-container" >
+            <img src="assets/images/logo.png"  alt="">
+            <h2 class="font-weight-bold">Login Account</h2>
+          </div>
+          <form [formGroup]="signInForm" (ngSubmit)="onSubmit()" *ngIf="signInForm">
+            <div class="form-group">
+              <input formControlName="email" type="email" class="form-control auth-input" id="inputEmail4" placeholder="Email" [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors }">
+              <div *ngIf="f.email.touched && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">Email is required</div>
+                <div *ngIf="f.email.errors.email">Email is not valid </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <input formControlName="password" type="password" class="form-control auth-input" id="inputPassword4" placeholder="Password" [ngClass]="{ 'is-invalid': f.password.touched && f.password.errors }">
+              <div *ngIf="f.password.touched && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required">Password is required</div>
+                <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+              </div>
+            </div>
+            <div class="row remember-me" >
+              <div class="col-6" >
+                <p>
+                  <input type="checkbox" id="test1" />
+                  <label style='color:#acb3bf' for="test1" > Keep me signed in </label>
+                </p>
+              </div>
+              <div class="col-6" >
+                Already a member ?
+              </div>
+
+            </div>
+            <div class="form-group">
+
+              <!-- <button-component [type]="'button'" [classes]="'btn-secondary'" (clicked)="onReset($event)">Cancel</button-component> -->
+              <button-component [type]="'submit'" [classes]="'btn-lg btn-block btn-primary default-bg radius'" [isdisabled]='signInForm.invalid'>Sign in</button-component>
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
