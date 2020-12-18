@@ -10,6 +10,7 @@
             <img src="assets/images/logo.png"  alt="">
             <h2 class="font-weight-bold">Login Account</h2>
           </div>
+          <app-alert></app-alert>
           <form [formGroup]="signInForm" (ngSubmit)="onSubmit()" *ngIf="signInForm">
             <div class="form-group">
               <input formControlName="email" type="email" class="form-control auth-input" id="inputEmail4" placeholder="Email" [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors }">

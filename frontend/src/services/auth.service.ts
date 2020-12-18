@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import decode from 'jwt-decode';
 
 import { map } from 'rxjs/operators';
 
@@ -11,10 +12,15 @@ export class AuthService {
   constructor(public jwtHelper: JwtHelperService, private http: HttpClient) {}
 
   public isAuthenticated(): boolean {
-    const token = localStorage.getItem('token');
-    // Check whether the token is expired and return
-    // true or false
+    var token = null
+    const currentUser = this.currentUserValue();
+    if (currentUser){
+      token = currentUser['token']
+    }
     if (token) {
+      const tokenPayload = decode(token)['data'];
+      if(!tokenPayload ) return false
+      if (!['admin', 'restricted'].includes(tokenPayload['role'])) return false
       return !this.jwtHelper.isTokenExpired(token);
     }else{
       return false
@@ -26,15 +32,14 @@ export class AuthService {
     return JSON.parse(localStorage.getItem('currentUser'))
   }
 
-  login(username: string, password: string) {
-    return this.http.post<any>('users/signin', { username: username, password: password })
+  login(email: string, password: string) {
+    return this.http.post<any>('users/signin', { email: email, password: password })
     .pipe(
-      map(user => {
-        debugger
-        if (user && user.token) {
-          localStorage.setItem('currentUser', JSON.stringify(user));
+      map(reponse => {
+        if(reponse.message == "user authenticated" && ['admin', 'restricted'].includes(reponse.data['role'])){
+          localStorage.setItem('currentUser', JSON.stringify(reponse.data));
         }
-        return user;
+        return reponse;
       })
     )
   }

@@ -84,7 +84,7 @@ router.post('/signin',
     checkUserByEmail(req, res)
     .then( result =>  next() )
     .catch( error => {
-      return res.status(500).json({
+      return res.status(200).json({
         message: 'An error has occured' ,
         error:  error
       });
@@ -95,7 +95,7 @@ router.post('/signin',
     checkPassword(req, res)
     .then( result => next() )
     .catch( error => {
-      return res.status(500).json({
+      return res.status(200).json({
         message: 'An error has occured' ,
         error:  error
       });
@@ -111,6 +111,7 @@ router.post('/signin',
           id:    req.body.id,
           email: req.body.email,
           name:  req.body.name,
+          role:  req.body.role,
           token: token
         }
       });
