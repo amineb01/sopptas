@@ -8,6 +8,10 @@ const ReclamationSchema = new Schema({
   date: Date,
   image:{ type:String, required:true },
   user: { type: Schema.Types.ObjectId, ref: 'User', required:true },
+  category: { type: Schema.Types.ObjectId, ref: 'Category', required:true },
+  comments:[{type: Schema.Types.ObjectId, ref: 'Comment', default:null}],
+},{
+  timestamps:true
 });
 
 module.exports = mongoose.model('Reclamation',ReclamationSchema)
