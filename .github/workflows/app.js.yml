@@ -20,7 +20,22 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-        
+    
+    - name: Create env file
+      run: |
+          touch .env
+          echo PORT=3000 >> .env
+          echo SERVER=0.0.0.0 >> .env
+          echo GOOGLE_USER=${{ secrets.GOOGLE_USER }} >> .env
+          echo GOOGLE_PASS=${{ secrets.GOOGLE_PASS }} >> .env
+          echo DB_SERVER=localhost >> .env
+          echo DB_PORT=27017 >> .env
+          echo secretKey=${{ secrets.SECRET_KEY }} >> .env
+          cat .env   
+          
+    - name: Start Docker for Mongodb
+      run: docker run -d -p 27017:27017 mongo   
+       
     - name: Execute frontend build
       working-directory: ./frontend
       run: |
