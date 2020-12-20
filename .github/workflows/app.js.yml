@@ -47,3 +47,25 @@ jobs:
       run: |
         npm install
         npm test
+
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Remove old containers
+        run: |
+          docker container rm -f express-mongo  
+          docker container rm -f mongo      
+      - name: Create env file
+        run: |
+          touch .env
+          echo PORT=3000 >> .env
+          echo SERVER=0.0.0.0 >> .env
+          echo GOOGLE_USER=${{ secrets.GOOGLE_USER }} >> .env
+          echo GOOGLE_PASS=${{ secrets.GOOGLE_PASS }} >> .env
+          echo DB_SERVER=mongo >> .env
+          echo DB_PORT=27017 >> .env
+          cat .env   
+      - name: run docker compose
+        run: docker-compose up --build -d  
+        env:
+          CD: true
