@@ -1,0 +1,35 @@
+version: "3"
+services:
+  app:
+    container_name: backend-express-mongo
+    restart: always
+    build: ./backend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend/models:/app/models
+      - ./backend/middlewares:/app/middlewares
+      - ./backend/controllers:/app/controllers
+    links:
+      - mongo
+      - front
+    env_file:
+     - ./backend/.env
+    depends_on:
+     - mongo
+     
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - datavolume_sopptas:/data/db
+  front:
+    container_name: frontend-angular
+    build: ./frontend
+    ports:
+      - "80:80"
+      - "443:443"
+volumes:
+  datavolume_sopptas:
