@@ -28,7 +28,7 @@ jobs:
           echo SERVER=0.0.0.0 >> .env
           echo GOOGLE_USER=${{ secrets.GOOGLE_USER }} >> .env
           echo GOOGLE_PASS=${{ secrets.GOOGLE_PASS }} >> .env
-          echo DB_SERVER=mongo >> .env
+          echo DB_SERVER=0.0.0.0 >> .env
           echo DB_PORT=27017 >> .env
           echo secretKey=${{ secrets.SECRET_KEY }} >> .env
           cat .env   
