@@ -17,5 +17,5 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /usr/share/nginx/html
 COPY --from=build-satge /usr/src/app/dist/angularCrash/ .
-RUN ls -a ./
+
 EXPOSE 80
