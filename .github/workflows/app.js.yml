@@ -20,11 +20,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
+    - uses: actions/checkout@v1
     - name: Execute frontend tests && build
       working-directory: ./frontend
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+    - uses: actions/checkout@v1  
     - name: Execute backend tests
       working-directory: ./backend
     - run: npm ci
