@@ -20,10 +20,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: cd frontend   
+    - name: Execute frontend tests && build
+      working-directory: ./frontend
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
-    - run: cd .. && cd backend   
+    - name: Execute backend tests
+      working-directory: ./backend
     - run: npm ci
     - run: npm test
