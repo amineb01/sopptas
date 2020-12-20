@@ -21,12 +21,11 @@ jobs:
       with:
         node-version: 12.x
         
-    - name: Execute frontend tests && build
+    - name: Execute frontend build
       working-directory: ./frontend
       run: |
         npm install
         npm run build --if-present
-        npm test
 
     - name: Execute backend tests
       working-directory: ./backend

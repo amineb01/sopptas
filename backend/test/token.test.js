@@ -11,7 +11,8 @@ var defaultUser = {
   email: "amine@gmail.com",
   name: "amine",
   password: "test",
-  id: '1'
+  id: '1',
+  role: 'citizen'
 }
 
 
@@ -25,14 +26,6 @@ describe('token ', () => {
   })
 
   describe('generate token', () => {
-    describe('not generate token if privateKey is not exist', () => {
-
-      it('token should not be generated', () => {
-        return expect(generateToken(req, res)).to.be.rejectedWith("secretOrPrivateKey must have a value");
-      });
-
-    });
-
 
     describe('generate token if privateKey is exist', () => {
       before(() => {
@@ -75,7 +68,8 @@ describe('token ', () => {
         });
 
         it('return id of defaultUser', () => {
-          return expect(verifyToken(req, res)).to.eventually.equal(defaultUser.id);
+          console.log('decoder',{role:defaultUser.role,email:defaultUser.email,id:defaultUser.id})
+          return expect(verifyToken(req, res)).to.eventually.deep.equal({role:defaultUser.role,email:defaultUser.email,id:defaultUser.id});
         });
 
       });
