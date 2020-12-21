@@ -50,7 +50,9 @@ jobs:
         npm test
 
   build:
+    
     runs-on: self-hosted
+    
     steps:
       - name: Remove old containers
         run: |
