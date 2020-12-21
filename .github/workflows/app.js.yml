@@ -49,10 +49,8 @@ jobs:
         npm install
         npm test
 
-  build:
-    
+  build-node:
     runs-on: self-hosted
-    
     steps:
       - name: Remove old containers
         run: |
@@ -72,3 +70,4 @@ jobs:
         run: docker-compose up --build -d  
         env:
           CD: true
+      
