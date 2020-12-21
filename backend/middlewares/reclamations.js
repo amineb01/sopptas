@@ -12,9 +12,11 @@ const getReclamations = (req, res) => {
     reclamations = Reclamation.find()
   }
   // Reclamation.find({ user: req.headers.id })
+  limit = req.query.limit
+  page  = req.query.page
   reclamations.select('_id title body user ')
-  .limit(req.query.limit * 1)
-  .skip((req.query.page - 1) * req.query.limit)
+  .limit(limit * 1)
+  .skip((page - 1) * req.query.limit)
   .populate('user', 'name')
   .then(results => {
     deferred.resolve( {
