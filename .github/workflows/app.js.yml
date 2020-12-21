@@ -42,22 +42,24 @@ jobs:
       run: |
         npm install
         npm run build --if-present
-
     - name: Execute backend tests
       working-directory: ./backend
       run: |
         npm install
         npm test
-
   build-node:
     runs-on: self-hosted
     steps:
+      - name: Check out my other private repo
+        uses: actions/checkout@master
+        with:
+          repository: amineb01/sopptas
+
       - name: Remove old containers
-        run: |
-          docker container rm -f express-mongo  
-          docker container rm -f mongo      
+        run: docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
       - name: Create env file
         run: |
+          rm .env
           touch .env
           echo PORT=3000 >> .env
           echo SERVER=0.0.0.0 >> .env
@@ -66,9 +68,10 @@ jobs:
           echo DB_SERVER=mongo >> .env
           echo DB_PORT=27017 >> .env
           echo privateKey=${{ secrets.SECRET_KEY }} >> .env
-          cat .env   
+          cat .env 
+      - name: cp env
+        run: cp .env ./backend
       - name: run docker compose
         run: docker-compose up --build -d  
         env:
           CD: true
-      
