@@ -55,8 +55,8 @@ jobs:
         with:
           repository: amineb01/sopptas
 
-      - name: Remove old containers
-        run: docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+      #- name: Remove old containers
+      #  run: docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
       - name: Create env file
         run: |
           touch .env
