@@ -75,7 +75,7 @@ describe('token ', () => {
       });
 
   });
-
+  //
   // describe('verify token', () => {
   //   before(() => {
   //     req.body.cryptedPassword=  req.body.password
