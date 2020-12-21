@@ -9,11 +9,11 @@ const categories = require('../controllers/categories')(express)
 
 
 const router = (app) => {
-  app.use('/reclamations', reclamations);
-  app.use('/users', users);
-  app.use('/points', points);
-  app.use('/zones', zones);
-  app.use('/categories', categories);
+  app.use('/api/reclamations', reclamations);
+  app.use('/api/users', users);
+  app.use('/api/points', points);
+  app.use('/api/zones', zones);
+  app.use('/api/categories', categories);
 
   return app;
 }

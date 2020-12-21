@@ -5,7 +5,7 @@ var deferred
 const getUsers = (req, res) => {
   deferred = Q.defer();
   User.find()
-  .select('_id name email')
+  .select('_id name email role')
   .then(users => {
     deferred.resolve( {
        users,
