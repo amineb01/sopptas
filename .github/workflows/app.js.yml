@@ -65,6 +65,7 @@ jobs:
           echo GOOGLE_PASS=${{ secrets.GOOGLE_PASS }} >> .env
           echo DB_SERVER=mongo >> .env
           echo DB_PORT=27017 >> .env
+          echo privateKey=${{ secrets.SECRET_KEY }} >> .env
           cat .env   
       - name: run docker compose
         run: docker-compose up --build -d  
