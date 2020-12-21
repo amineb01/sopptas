@@ -59,7 +59,6 @@ jobs:
         run: docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
       - name: Create env file
         run: |
-          rm .env
           touch .env
           echo PORT=3000 >> .env
           echo SERVER=0.0.0.0 >> .env
