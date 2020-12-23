@@ -12,10 +12,10 @@ const getReclamations = (req, res) => {
     reclamations = Reclamation.find()
   }
   // Reclamation.find({ user: req.headers.id })
-  reclamations.select('_id title body user ')
+  reclamations.select('_id title body user category image createdAt updatedAt')
   .limit(req.query.limit * 1)
   .skip((req.query.page - 1) * req.query.limit)
-  .populate('user', 'name')
+  .populate('user', 'category')
   .then(results => {
     deferred.resolve( {
        reclamations: results,

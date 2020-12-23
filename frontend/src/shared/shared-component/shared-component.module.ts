@@ -12,7 +12,7 @@ import { AlertComponent } from './alert/alert.component';
     AlertComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
   ],
   exports: [
     ButtonComponentComponent,

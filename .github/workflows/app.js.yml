@@ -55,8 +55,9 @@ jobs:
         with:
           repository: amineb01/sopptas
 
-      #- name: Remove old containers
-      #  run: docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+      - name: Remove old containers
+        #run: docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+        run: docker-compose down
       - name: Create env file
         run: |
           touch .env
@@ -72,5 +73,7 @@ jobs:
         run: cp .env ./backend
       - name: run docker compose
         run: docker-compose up --build -d  
+      - name: seed db
+        run: mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/sopptas
         env:
           CD: true

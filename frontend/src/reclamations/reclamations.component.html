@@ -1,0 +1,31 @@
+
+  <div  *ngIf="reclamationsList.length > 0" class="main-panel-rec">
+    <div
+
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      [infiniteScrollContainer]="selector"
+      [fromRoot]="true"
+      (scrolled)="onScrollDown()"
+      (scrolledUp)="onScrollUp($event)"
+    ></div>
+      <mat-card *ngFor="let item of reclamationsList" class="rec-card">
+        <mat-card-header>
+          <div mat-card-avatar class="header-image" [ngStyle]="{'background-image': 'url(' + item.imagePath + ')'}" ></div>
+          <mat-card-title>{{item.title}}</mat-card-title>
+          <mat-card-subtitle>{{item.category}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <img mat-card-image [src]="item.imagePath" alt="Photo example">
+
+          <p>
+            {{item.body}}.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+  </div>

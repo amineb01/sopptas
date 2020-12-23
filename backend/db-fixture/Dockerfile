@@ -1,4 +1,10 @@
 FROM mongo
 
-COPY fixture.json /fixture.json
-CMD mongoimport --host mongo --db sopptas --collection users --type json --file /fixture.json --jsonArray
+WORKDIR /db
+
+COPY dump .
+# CMD  mongorestore --host mongo --db sopptas ./dump/sopptas/
+# CMD  mongorestore --host mongo --db sopptas ./dump/sopptas/
+# CMD  mongorestore --host 0.0.0.0 --db sopptas ./dump/sopptas/
+CMD [ "ls", "-a"]
+CMD [ "mongorestore", "--host", "0.0.0.0", "--db", "sopptas", "dump/sopptas" ]
