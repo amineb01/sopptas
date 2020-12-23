@@ -74,8 +74,6 @@ jobs:
       - name: run docker compose
         run: docker-compose up --build -d  
       - name: seed db
-        run: |
-          sudo apt install mongodb-org
-          mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/sopptas
+        run: mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/sopptas
         env:
           CD: true
