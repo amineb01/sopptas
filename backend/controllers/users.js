@@ -1,10 +1,10 @@
 var User = require('../models/User')
 var checkUserByEmail = require('../middlewares/checkUserByEmail')
-var { generateToken } = require('../middlewares/token')
+var { generateToken, verifyToken } = require('../middlewares/token')
 var { generatePassword, checkPassword } = require('../middlewares/password')
 
 
-var { setUser, getUsers } = require('../middlewares/users')
+var { setUser, getUsers, addPointToUser, removePointFromUser } = require('../middlewares/users')
 
 const userController = (express) => {
 const router = express.Router();
@@ -142,8 +142,78 @@ router.get('/:id', (req, res) => {
   })
 })
 
+
+
+
+
+router.post(
+  "/addPoint",
+  function (req, res, next) {
+    verifyToken(req, res)
+      .then((decodedToken) => {
+        req.headers.id = decodedToken.id;
+        next();
+      })
+      .catch((error) => {
+        return res.status(401).json({
+          message: error,
+          error: "invalid token",
+        });
+      })
+      .done();
+  },
+ 
+  function (req, res, next) {
+    addPointToUser(req)
+      .then((result) => {
+        return res.status(200).json({
+          result: result,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          message: "An error has occured",
+          error: error,
+        });
+      })
+      .done();
+  }
+);
+
+router.delete(
+  "/removePoint/:id",
+  function (req, res, next) {
+    verifyToken(req, res)
+      .then((decodedToken) => {
+        req.headers.id = decodedToken.id;
+        next();
+      })
+      .catch((error) => {
+        return res.status(401).json({
+          message: error,
+          error: "invalid token",
+        });
+      })
+      .done();
+  },
+ 
+  function (req, res, next) {
+    removePointFromUser(req)
+      .then((result) => {
+        return res.status(200).json({
+          result: result,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          message: "An error has occured",
+          error: error,
+        });
+      })
+      .done();
+  }
+);
+
 return router
 }
-
-
 module.exports = userController;
