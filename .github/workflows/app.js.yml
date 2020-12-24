@@ -75,8 +75,9 @@ jobs:
         run: docker-compose up --build -d  
 
       - name: Sleep for 20 seconds and seed db
-        run: |
-          sleep 20
-          mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/sopptas
+        #   |
+        #   sleep 20
+        #   mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/soppta
+        run: mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/sopptas
         env:
           CD: true
