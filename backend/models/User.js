@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   email: { type:String, required:true },
   password: { type:String, required:true },
   reclamations: [{ type: Schema.Types.ObjectId, ref: 'Reclamation' }],
+  points: [{_id:{ type: Schema.Types.ObjectId, ref: 'Point' }, status:{ type: String, enum: ['active', 'inactive'], default: 'active' }}],
   role: { type: String, enum: ['admin', 'restricted', 'citizen'], default: 'citizen' },
 });
 

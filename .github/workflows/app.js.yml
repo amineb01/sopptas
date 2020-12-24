@@ -73,6 +73,12 @@ jobs:
         run: cp .env ./backend
       - name: run docker compose
         run: docker-compose up --build -d  
+
+      - name: Sleep for 10 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '10s'  
+
       - name: seed db
         run: mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/sopptas
         env:

@@ -36,6 +36,63 @@ const setUser = (req, res) => {
   return deferred.promise;
 }
 
+const addPointToUser = (req, res) => {
+  const conditions = {
+    _id: req.headers.id,
+    'points._id': { $ne: req.body.id }
+  };
+  const update = {
+      $addToSet: { points: { _id:req.body.id } }
+  }
+
+  deferred = Q.defer();
+  User.updateOne( 
+    conditions,
+    update, 
+    { multi: true }, (err, result) =>{
+      if (err) {
+        deferred.reject(err.message);
+      } else {
+        deferred.resolve(result) 
+      }
+    }
+  );
+  return deferred.promise;
+
+};
+
+const removePointFromUser = (req, res) => {
+  console.log(req.headers.id)
+
+  console.log(req.params.id)
+  const conditions = {
+    _id: req.headers.id,
+    'points._id': { $eq: req.params.id }
+  };
+  const update = {
+      $pull: { points: { _id:req.params.id } }
+  }
+
+  deferred = Q.defer();
+  User.updateOne( 
+    conditions,
+    update, 
+    { multi: true }, (err, result) =>{
+      if (err) {
+        deferred.reject(err.message);
+      } else {
+        deferred.resolve(result) 
+      }
+    }
+  );
+  return deferred.promise;
 
 
-module.exports = { getUsers, setUser }
+};
+
+
+
+
+
+
+module.exports = { getUsers, setUser, addPointToUser, removePointFromUser }

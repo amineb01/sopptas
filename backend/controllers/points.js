@@ -1,6 +1,6 @@
 var Point = require("../models/Point");
 
-var { setPoint, findByZoneId } = require("../middlewares/points");
+var { setPoint, findByZoneId, findNearestPointZone} = require("../middlewares/points");
 var { verifyToken, isCollaboratorToken } = require("../middlewares/token");
 
 const pointController = (express) => {
@@ -50,6 +50,7 @@ const pointController = (express) => {
     function (req, res, next) {
       setPoint(req)
         .then((result) => {
+          console.log("setPoint")
           return res.status(200).json({
             result: result,
           });
@@ -113,7 +114,63 @@ const pointController = (express) => {
     }
   );
 
-  return router;
+
+
+router.get(
+  "/nearest/:latitude/:longitude",
+  function (req, res, next) {
+    verifyToken(req, res, next)
+      .then((decodedToken) => {
+        req.headers.id = decodedToken.id;
+        req.headers.role = decodedToken.role;
+        next();
+      })
+      .catch((error) => {
+        return res.status(401).json({
+          message: error,
+          error: "invalid token",
+        });
+      })
+      .done();
+  },
+
+  function (req, res, next) {
+    isCollaboratorToken(req, res)
+      .then((result) => {
+        next();
+      })
+      .catch((error) => {
+        return res.status(401).json({
+          message: error,
+          error: "invalid token",
+        });
+      })
+      .done();
+  },
+
+  function (req, res, next) {
+    findNearestPointZone(req, res)
+      .then((points) => {
+        return res.status(200).json({
+        zone: points[0].zone,
+
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          message: "An error has occured",
+          error: error,
+        });
+      })
+      .done();
+  }
+);
+
+return router;
 };
+
+
+
+
 
 module.exports = pointController;
