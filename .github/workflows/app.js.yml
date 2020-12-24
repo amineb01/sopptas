@@ -80,6 +80,8 @@ jobs:
           time: '10s'  
 
       - name: seed db
-        run: mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/sopptas
+        run: |
+          sleep 20
+          mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/sopptas
         env:
           CD: true
