@@ -10,43 +10,6 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    
-    - name: Create env file
-      working-directory: ./backend
-      run: |
-          touch .env
-          echo PORT=3000 >> .env
-          echo SERVER=localhost >> .env
-          echo GOOGLE_USER=${{ secrets.GOOGLE_USER }} >> .env
-          echo GOOGLE_PASS=${{ secrets.GOOGLE_PASS }} >> .env
-          echo DB_SERVER=localhost >> .env
-          echo DB_PORT=27017 >> .env
-          echo privateKey=${{ secrets.SECRET_KEY }} >> .env
-          cat .env   
-          
-    - name: Start Docker for Mongodb
-      run: docker run -d -p 27017:27017 mongo   
-       
-    - name: Execute frontend build
-      working-directory: ./frontend
-      run: |
-        npm install
-        npm run build --if-present
-    - name: Execute backend tests
-      working-directory: ./backend
-      run: |
-        npm install
-        npm test
   build-node:
     runs-on: self-hosted
     steps:
