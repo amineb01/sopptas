@@ -29,6 +29,8 @@ services:
   front:
     container_name: frontend-angular
     build: ./frontend
+    links:
+      - app
     ports:
       - "80:80"
       - "443:443"
