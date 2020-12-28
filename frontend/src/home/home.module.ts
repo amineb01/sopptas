@@ -4,7 +4,6 @@ import { AngularMaterialModule } from '../angular-material/angular-material.modu
 
 import { HomeComponent } from './home.component';
 import { SidenavComponent } from '../templates/sidenav/sidenav.component';
-import { FooterComponent } from '../templates/footer/footer.component';
 
 import { ServicesModule } from '../services/services.module';
 import { HomeRoutingModule } from './home-routing.module';
@@ -14,7 +13,6 @@ import { HomeRoutingModule } from './home-routing.module';
 @NgModule({
   declarations: [
     SidenavComponent,
-    FooterComponent,
     HomeComponent,
   ],
   imports: [
@@ -24,7 +22,6 @@ import { HomeRoutingModule } from './home-routing.module';
   ],
   exports: [
     SidenavComponent,
-    FooterComponent,
     HomeComponent,
   ],
   providers: [ServicesModule],
