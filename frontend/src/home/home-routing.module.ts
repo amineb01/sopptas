@@ -19,6 +19,8 @@ const routes: Routes = [
     { path: 'users', loadChildren: () => import('../users/users.module').then(m => m.UsersModule)  },
     { path: 'reclamations', loadChildren: () => import('../reclamations/reclamations.module').then(m => m.ReclamationsModule)  },
     { path: 'reactiveform', loadChildren: () => import('../reactive-form/reactiveform.module').then(m => m.ReactiveFormModule)  },
+    { path: '**', redirectTo: 'reclamations' }
+
   ]
  }
 ];
