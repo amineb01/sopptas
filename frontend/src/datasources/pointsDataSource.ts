@@ -6,31 +6,35 @@ import { PointsService } from '../services/points.service';
 
 export class PointsDataSource implements DataSource<Point> {
 
-    private zonesSubject = new BehaviorSubject<Point[]>([]);
+    private pointsSubject = new BehaviorSubject<Point[]>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
+    private countSubject = new BehaviorSubject<number>(0);
 
     public loading$ = this.loadingSubject.asObservable();
+    public count$ = this.countSubject.asObservable();
 
-    constructor(private zonesService: PointsService) {}
+    constructor(private pointsService: PointsService) {}
 
     connect(collectionViewer: CollectionViewer): Observable<Point[]> {
-        return this.zonesSubject.asObservable();
+        return this.pointsSubject.asObservable();
     }
 
     disconnect(collectionViewer: CollectionViewer): void {
-        this.zonesSubject.complete();
+        this.pointsSubject.complete();
         this.loadingSubject.complete();
+        this.countSubject.complete();
+
     }
 
-    loadPoints(filter = '',sortActive = 'asc',
+    loadPoints(zoneId, filter = '',sortActive = 'asc',
                 sortDirection = 'asc', pageIndex = 0, pageSize = 5) {
 
         this.loadingSubject.next(true);
 
-        this.zonesService.getPoints(filter, sortActive, sortDirection,
+        this.pointsService.getPoints(zoneId, filter, sortActive, sortDirection,
             pageIndex, pageSize).pipe(
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe(result => this.zonesSubject.next(result['points']));
+        .subscribe(result => {this.countSubject.next(result.length); this.pointsSubject.next(result)});
     }    
 }

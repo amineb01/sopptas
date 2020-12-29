@@ -90,7 +90,6 @@ const findByZoneId = (req, res) => {
   deferred = Q.defer();
   Point.find({ zone: req.params.zoneId })
   .select('_id location name')
-  .populate('zone', 'name')
   .then(result => { deferred.resolve(result) })
   .catch(error => {
     deferred.reject(error.message);
@@ -123,7 +122,20 @@ const findNearestPointZone = (req, res) => {
 
 };
 
+const findAll = (req, res) => {
+  deferred = Q.defer();
+  Point.find()
+  .then(result => { deferred.resolve(result) })
+  .catch(error => {
+    deferred.reject(error.message);
+  })
+    
+  return deferred.promise;
+
+};
 
 
 
-module.exports = { setPoint, findByZoneId, findNearestPointZone };
+
+
+module.exports = { setPoint, findByZoneId, findNearestPointZone, findAll };

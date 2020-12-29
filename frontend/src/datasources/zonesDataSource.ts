@@ -8,8 +8,10 @@ export class ZonesDataSource implements DataSource<Zone> {
 
     private zonesSubject = new BehaviorSubject<Zone[]>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
+    private countSubject = new BehaviorSubject<number>(0);
 
     public loading$ = this.loadingSubject.asObservable();
+    public count$ = this.countSubject.asObservable();
 
     constructor(private zonesService: ZonesService) {}
 
@@ -20,6 +22,8 @@ export class ZonesDataSource implements DataSource<Zone> {
     disconnect(collectionViewer: CollectionViewer): void {
         this.zonesSubject.complete();
         this.loadingSubject.complete();
+        this.countSubject.complete();
+
     }
 
     loadZones(filter = '',sortActive = 'asc',
@@ -31,6 +35,6 @@ export class ZonesDataSource implements DataSource<Zone> {
             pageIndex, pageSize).pipe(
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe(result => this.zonesSubject.next(result['result']['zones']));
+        .subscribe(result => {this.countSubject.next(result.length); this.zonesSubject.next(result)});
     }    
 }
