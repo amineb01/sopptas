@@ -21,7 +21,7 @@ const setZone = (req) => {
 const getZones = (req) => {
   deferred = Q.defer();
   Zone.find()
-    .select("_id name points")
+    .select("_id name ")
     .then((zones) => {
       deferred.resolve({
         zones,

@@ -10,9 +10,9 @@ export class PointsService {
 
   constructor(public http: HttpClient) { }
 
-  getPoints( filter = '', sortActive= 'title',  sortOrder = 'asc', pageNumber = 0, pageSize = 5):  Observable<Point[]> {
+  getPoints( id_zone, filter = '', sortActive= 'title',  sortOrder = 'asc', pageNumber = 0, pageSize = 5):  Observable<Point[]> {
     console.log('filter '+filter+' sortOrder '+' sortActive '+sortActive +' sortOrder '+sortOrder+' pageNumber '+pageNumber+' pageSize '+pageSize  )
-    return this.http.get<Point[]>('points/by_zone/5fe2626b7f40d449d91333fd', {
+    return this.http.get<Point[]>('points/by_zone/'+id_zone, {
         params: new HttpParams()
             .set('filter', filter)
             .set('sortOrder', sortOrder)

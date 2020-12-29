@@ -1,6 +1,6 @@
 var Point = require("../models/Point");
 
-var { setPoint, findByZoneId, findNearestPointZone} = require("../middlewares/points");
+var { setPoint, findByZoneId, findNearestPointZone, findAll} = require("../middlewares/points");
 var { verifyToken, isCollaboratorToken } = require("../middlewares/token");
 
 const pointController = (express) => {
@@ -51,9 +51,7 @@ const pointController = (express) => {
       setPoint(req)
         .then((result) => {
           console.log("setPoint")
-          return res.status(200).json({
-            result: result,
-          });
+          return res.status(200).json(result);
         })
         .catch((error) => {
           return res.status(500).json({
@@ -64,6 +62,54 @@ const pointController = (express) => {
         .done();
     }
   );
+
+
+  router.get("/",
+    function (req, res, next) {
+      verifyToken(req, res, next)
+        .then((decodedToken) => {
+          req.headers.id = decodedToken.id;
+          req.headers.role = decodedToken.role;
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
+          });
+        })
+        .done();
+    },
+
+    function (req, res, next) {
+      isCollaboratorToken(req, res)
+        .then((result) => {
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
+          });
+        })
+        .done();
+    },
+
+    function (req, res, next) {
+      findAll(req)
+        .then((points) => {
+          return res.status(200).json(points);
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            message: "An error has occured",
+            error: error,
+          });
+        })
+        .done();
+    }
+  );
+
 
   router.get(
     "/by_zone/:zoneId",
@@ -100,9 +146,7 @@ const pointController = (express) => {
     function (req, res, next) {
       findByZoneId(req)
         .then((points) => {
-          return res.status(200).json({
-            points: points,
-          });
+          return res.status(200).json(points);
         })
         .catch((error) => {
           return res.status(500).json({

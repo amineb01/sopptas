@@ -18,6 +18,20 @@ const getUsers = (req, res) => {
   return deferred.promise;
 }
 
+const sendNotif = (req, res) => {
+  console.log(req.params.idPoint)
+  deferred = Q.defer();
+  User.find({"points._id": req.params.idPoint} )
+  .select('_id ')
+  .then(users => {
+    deferred.resolve(users);
+   })
+    .catch(error => {
+      deferred.reject(error);
+    })
+  return deferred.promise;
+}
+
 const setUser = (req, res) => {
   deferred = Q.defer();
     let user = new User({
@@ -95,4 +109,4 @@ const removePointFromUser = (req, res) => {
 
 
 
-module.exports = { getUsers, setUser, addPointToUser, removePointFromUser }
+module.exports = { getUsers, setUser, addPointToUser, removePointFromUser, sendNotif }

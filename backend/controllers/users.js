@@ -1,10 +1,10 @@
 var User = require('../models/User')
 var checkUserByEmail = require('../middlewares/checkUserByEmail')
-var { generateToken, verifyToken } = require('../middlewares/token')
+var { generateToken, verifyToken, isCollaboratorToken } = require('../middlewares/token')
 var { generatePassword, checkPassword } = require('../middlewares/password')
 
 
-var { setUser, getUsers, addPointToUser, removePointFromUser } = require('../middlewares/users')
+var { setUser, getUsers, addPointToUser, removePointFromUser, sendNotif } = require('../middlewares/users')
 
 const userController = (express) => {
 const router = express.Router();
@@ -40,7 +40,7 @@ router.post('/signup',
       next()
      })
     .catch( error => {
-      return res.status(500).json({
+      return res.status(401).json({
         message: 'An error has occured' ,
         error:  error
       });
@@ -51,7 +51,7 @@ router.post('/signup',
     setUser(req, res)
     .then( result => next())
     .catch( error => {
-      return res.status(500).json({
+      return res.status(401).json({
         message: 'An error has occured0' ,
         error:  error
       });
@@ -70,7 +70,7 @@ router.post('/signup',
         });
       })
       .catch( error => {
-        return res.status(500).json({
+        return res.status(401).json({
           message: 'An error has occured' ,
           error:  error
         });
@@ -95,7 +95,7 @@ router.post('/signin',
     checkPassword(req, res)
     .then( result => next() )
     .catch( error => {
-      return res.status(200).json({
+      return res.status(401).json({
         message: 'An error has occured' ,
         error:  error
       });
@@ -117,7 +117,7 @@ router.post('/signin',
       });
     })
     .catch( error => {
-      return res.status(500).json({
+      return res.status(401).json({
         message: 'An error has occured' ,
         error:  error
       });
@@ -166,9 +166,7 @@ router.post(
   function (req, res, next) {
     addPointToUser(req)
       .then((result) => {
-        return res.status(200).json({
-          result: result,
-        });
+        return res.status(200).json(result);
       })
       .catch((error) => {
         return res.status(500).json({
@@ -200,9 +198,7 @@ router.delete(
   function (req, res, next) {
     removePointFromUser(req)
       .then((result) => {
-        return res.status(200).json({
-          result: result,
-        });
+        return res.status(200).json(result);
       })
       .catch((error) => {
         return res.status(500).json({
@@ -213,6 +209,95 @@ router.delete(
       .done();
   }
 );
+
+
+router.delete(
+  "/removePoint/:longitude/:latitude",
+  function (req, res, next) {
+    verifyToken(req, res)
+      .then((decodedToken) => {
+        req.headers.id = decodedToken.id;
+        next();
+      })
+      .catch((error) => {
+        return res.status(401).json({
+          message: error,
+          error: "invalid token",
+        });
+      })
+      .done();
+  },
+  function (req, res, next) {
+    isCollaboratorToken(req, res)
+      .then((result) => {
+        next();
+      })
+      .catch((error) => {
+        return res.status(401).json({
+          message: error,
+          error: "invalid token",
+        });
+      })
+      .done();
+  },
+ 
+  function (req, res, next) {
+    removePointFromUser(req)
+      .then((result) => {
+        return res.status(200).json(result);
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          message: "An error has occured",
+          error: error,
+        });
+      })
+      .done();
+  }
+);
+
+router.get('/sendNotif/:idPoint',
+function (req, res, next) {
+  verifyToken(req, res)
+    .then((decodedToken) => {
+      req.headers.role = decodedToken.role;
+      next();
+    })
+    .catch((error) => {
+      return res.status(401).json({
+        message: error,
+        error: "invalid token",
+      });
+    })
+    .done();
+},
+function (req, res, next) {
+  isCollaboratorToken(req, res)
+    .then((result) => {
+      next();
+    })
+    .catch((error) => {
+      return res.status(401).json({
+        message: error,
+        error: "invalid token",
+      });
+    })
+    .done();
+},
+
+  function(req, res, next) {
+    sendNotif(req, res)
+    .then( results =>{
+      return res.status(201).json(results);
+     })
+    .catch( error => {
+      return res.status(500).json({
+        message: 'An error has occured' ,
+        error:  error
+      });
+    })
+    .done()
+  });
 
 return router
 }

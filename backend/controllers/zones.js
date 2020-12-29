@@ -55,9 +55,7 @@ const ZoneController = (express) => {
     function (req, res, next) {
       setZone(req)
         .then((result) => {
-          return res.status(200).json({
-            result: result,
-          });
+          return res.status(200).json(result);
         })
         .catch((error) => {
           return res.status(500).json({
@@ -151,9 +149,9 @@ const ZoneController = (express) => {
     function (req, res, next) {
       getZones(req)
         .then((result) => {
-          return res.status(200).json({
-            result: result,
-          });
+          return res.status(200).json(
+            result['zones'],
+          );
         })
         .catch((error) => {
           return res.status(500).json({

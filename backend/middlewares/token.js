@@ -5,7 +5,7 @@ var deferred
 const generateToken = (req, res) => {
   deferred = Q.defer();
   try {
-    var token = jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60 *24),
+    var token = jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60 *24 *30 ),
                          data:{ role: req.body.role || 'citizen', email: req.body.email, id: req.body.id  }},
                          process.env.privateKey);
 
@@ -20,11 +20,11 @@ const generateToken = (req, res) => {
 
 const verifyToken = (req, res) => {
   deferred = Q.defer();
-  let token = req.headers.token
+  let token = req.headers.authorization
   if (!token) {
     deferred.reject('token is required');
   } else {
-    var decoded = jwt.verify(token, process.env.privateKey, function(err, decoded) {
+    jwt.verify(token, process.env.privateKey, function(err, decoded) {
       if (decoded) {
         deferred.resolve( decoded.data );
       } else {
