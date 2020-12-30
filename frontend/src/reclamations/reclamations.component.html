@@ -10,7 +10,7 @@
       (scrolled)="onScrollDown()"
       (scrolledUp)="onScrollUp($event)"
     ></div>
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
         <div   *ngFor="let item of reclamationsList"  class="col-md-6"> 
           <div class="d-flex justify-content-center mt-4">
@@ -20,14 +20,14 @@
             <div class="container-image"><img [src]="item.imagePath" class="image"></div>
             <a href="#" class="light-backgrounds">
               <div class="overlay effect2">
-                <h4>{{item.body}}.</h4>
-                <p>{{item.body}}.</p>
+                <h4>{{ item.updatedAt | date:'EEEE, d MMMM ,y , h:mm a ':'+0100':'fr' }}</h4>
+                <p>{{item.body}}</p>
               </div>
             </a>
 
           </div>
           <div class="d-flex justify-content-center">
-            <button-component [type]="'submit'" [classes]="'btn-md btn-primary default-bg radius px-5 align-middle mt-2'" >details</button-component>
+            <button [routerLink]="item._id"  class="'btn-md btn-primary default-bg radius px-5 align-middle mt-2'" >details</button>
           </div>
         </div>
 

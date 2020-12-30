@@ -10,6 +10,10 @@ const ReclamationSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User', required:true },
   category: { type: Schema.Types.ObjectId, ref: 'Category', required:true },
   comments:[{type: Schema.Types.ObjectId, ref: 'Comment', default:null}],
+  location: {
+    type: {type: String, default: 'Point'},
+    coordinates: {type: [Number], default: [0, 0]}
+   },
 },{
   timestamps:true
 });
