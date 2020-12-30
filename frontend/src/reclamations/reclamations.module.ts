@@ -18,7 +18,7 @@ import { AgmCoreModule } from '@agm/core';
   imports: [
     CommonModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCgW8Th8umOGWKGWsJerQtOu619lbJUsBE'
+      apiKey: '----'
     }),
     ReactiveFormsModule,
     SharedComponentModule,
