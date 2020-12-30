@@ -1,0 +1,40 @@
+<div class="container-fluid" *ngIf='reclamation'>
+  <div class="row">
+      <div class="col-md-6">
+
+        <div class="container-image" [ngStyle]="{'background-image': 'url(' + reclamation?.imagePath + ')'}">
+
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="container-info" >
+         <h3>Titre de reclamation: {{reclamation.title}}</h3>
+         <p>Date d'envoi: {{reclamation.createdAt | date:'EEEE, d MMMM ,y , h:mm a ':'+0100':'fr'  }}</p>
+         <p>Date dernière modification: {{reclamation.updatedAt | date:'EEEE, d MMMM ,y , h:mm a ':'+0100':'fr'  }}</p>
+         <p>Description: {{reclamation.body}}</p>
+         
+        </div>
+      </div>
+  </div>  
+  <agm-map [latitude]="reclamation.latitude" [longitude]="reclamation.longitude">
+    <agm-marker [latitude]="reclamation.latitude" [longitude]="reclamation.longitude"></agm-marker>
+  </agm-map> 
+    <div  *ngIf="reclamation.comments.length > 0" >
+      <h3>Réponses:</h3>
+      <p  *ngFor="let comment of reclamation.comments"  > {{comment}}</p>
+    </div>  
+
+    <form class="d-flex justify-content-center" [formGroup]="reponseForm" (ngSubmit)="onSubmit()" *ngIf="reponseForm">
+        <div class="form-group d-block">
+      
+          <textarea formControlName="message" placeholder="This is an awesome comment box" rows="20" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+          <button-component [type]="'submit'" [classes]="'btn-lg btn-block btn-primary default-bg radius'" [isdisabled]='reponseForm.invalid'>Rependre</button-component>
+        </div>
+      
+        <div class="form-group d-block">
+        
+        </div>
+    </form>
+
+
+</div>        
