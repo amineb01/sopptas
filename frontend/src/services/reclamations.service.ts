@@ -19,5 +19,15 @@ export class ReclamationsService {
     });
   }
 
+  getReclamationById( id ):  Observable<Reclamation> {
+    return this.http.get<Reclamation>('reclamations/'+id)
+  }
+  
+  addResponse( id ):  Observable<Reclamation> {
+    return this.http.get<Reclamation>('reclamations/'+id)
+  }
+
+  
+
 }
 

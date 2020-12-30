@@ -112,11 +112,8 @@ const reclamationController = (express) => {
 
     function(req, res, next) {
       getOneReclamation(req, res)
-      .then( results =>{
-        return res.status(201).json({
-          message: 'reclamation found',
-          results,
-        });
+      .then( result =>{
+        return res.status(201).json(result);
        })
       .catch( error => {
         return res.status(500).json({
@@ -128,6 +125,7 @@ const reclamationController = (express) => {
     }
 
   )
+  
   router.put('/:id',
   function (req, res, next) {
     verifyToken(req, res)

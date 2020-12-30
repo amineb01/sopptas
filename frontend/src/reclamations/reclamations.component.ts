@@ -43,7 +43,6 @@ export class ReclamationsComponent implements OnInit {
   
   
   onScrollDown () {
-
     this.pageNumber ++ ;
     this.dataSource.loadReclamations( this.pageNumber, this.pageSize );
   }

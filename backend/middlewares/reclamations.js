@@ -13,6 +13,7 @@ const getReclamations = (req, res) => {
   }
   // Reclamation.find({ user: req.headers.id })
   reclamations.select('_id title body user category image createdAt updatedAt')
+  .sort({'createdAt':-1})
   .limit(req.query.limit * 1)
   .skip((req.query.page - 1) * req.query.limit)
   .populate('user', 'category')
@@ -35,7 +36,11 @@ const setReclamation = (req, res) => {
     body: req.body.body,
     user: req.body.user,
     image: req.file.path,
-    category: req.body.category
+    category: req.body.category,
+    location: {
+      type: "Point",
+      coordinates: [Number.parseFloat(req.body.longitude.replace(',','.')) ,Number.parseFloat(req.body.latitude.replace(',','.'))]
+     },
   })
 
   reclamation.save()
