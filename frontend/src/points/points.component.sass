@@ -2,10 +2,49 @@
   display: block
   margin: 20px
   .search-post-form
-    min-width: 150px
-    max-width: 500px
-    width: 100%
-
-  .search-post-form  
-    .full-width 
-      width: 100%
+    width: 70%
+    display: flex
+    justify-content: space-between
+    .select-container
+      width: auto!important
+      select 
+        -webkit-appearance: none
+        -moz-appearance: none
+        -ms-appearance: none
+        appearance: none
+        outline: 0
+        box-shadow: none
+        border: 0 !important
+        background: #006300
+        background-image: none
+      select::-ms-expand 
+        display: none
+      
+      .select 
+        position: relative
+        display: flex
+        width: 20em
+        height: 3em
+        line-height: 3
+        background: #006300
+        overflow: hidden
+        border-radius: .25em
+      select 
+        flex: 1
+        padding: 0 .5em
+        color: #fff
+        cursor: pointer
+      .select::after 
+        content: '\25BC'
+        position: absolute
+        top: 0
+        right: 0
+        padding: 0 1em
+        background: #34495e
+        cursor: pointer
+        pointer-events: none
+        -webkit-transition: .25s all ease
+        -o-transition: .25s all ease
+        transition: .25s all ease
+      .select:hover::after 
+        color: #f39c12

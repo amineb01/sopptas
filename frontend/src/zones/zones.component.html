@@ -24,5 +24,5 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [length]="100" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator  [length]="dataSource.count$ | async"  [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 </div>

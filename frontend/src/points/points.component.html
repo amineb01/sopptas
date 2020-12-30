@@ -1,9 +1,16 @@
 <h1> Zones disponibles </h1>
 <form class="search-post-form">
+  
   <mat-form-field class="full-width">
     <mat-label>Zones</mat-label>
     <input #input matInput placeholder="Ex. post name" class="search-post-form">
   </mat-form-field>
+  <div class="select-container">
+    <select class="select" (change)="selectChanged($event.target.value)" >
+      <option *ngFor="let item of zonesList; let i =index" [selected]='i==0' [value]="item._id">{{item.name}}</option>
+    </select>
+  </div>
+
 </form>
 <div class="mat-elevation-z8">
   <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort >
@@ -15,21 +22,21 @@
     </ng-container>
 
        <!-- zone Column -->
-       <ng-container matColumnDef="zone">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Zone </th>
-        <td mat-cell *matCellDef="let element"> {{element?.zone.name}} </td>
+       <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Nom </th>
+        <td mat-cell *matCellDef="let element"> {{element?.name}} </td>
       </ng-container>
 
     <!-- latitude Latitude -->
     <ng-container matColumnDef="latitude">
       <th mat-header-cell *matHeaderCellDef mat-sort-header > Latitude </th>
-      <td mat-cell *matCellDef="let element"> {{element?.latitude}} </td>
+      <td mat-cell *matCellDef="let element"> {{element?.location.coordinates[1]}} </td>
     </ng-container>
 
       <!-- longitude Column -->
       <ng-container matColumnDef="longitude">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Longitude </th>
-        <td mat-cell *matCellDef="let element"> {{element?.longitude}} </td>
+        <td mat-cell *matCellDef="let element"> {{element?.location.coordinates[0]}} </td>
       </ng-container>
   
       
@@ -37,6 +44,9 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-
-  <mat-paginator [length]="100" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator #paginator
+  [length]="dataSource.count$ | async"
+  [pageSize]="10"
+  [pageSizeOptions]="[10, 20, 50]">
+  </mat-paginator>
 </div>

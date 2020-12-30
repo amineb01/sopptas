@@ -8,8 +8,10 @@ export class UsersDataSource implements DataSource<User> {
 
     private usersSubject = new BehaviorSubject<User[]>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
+    private countSubject = new BehaviorSubject<number>(0);
 
     public loading$ = this.loadingSubject.asObservable();
+    public count$ = this.countSubject.asObservable();
 
     constructor(private usersService: UsersService) {}
 
@@ -20,6 +22,7 @@ export class UsersDataSource implements DataSource<User> {
     disconnect(collectionViewer: CollectionViewer): void {
         this.usersSubject.complete();
         this.loadingSubject.complete();
+        this.countSubject.complete();
     }
 
     loadUsers(filter = '',sortActive = 'asc',
@@ -31,6 +34,6 @@ export class UsersDataSource implements DataSource<User> {
             pageIndex, pageSize).pipe(
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe(result => this.usersSubject.next(result['results']['users']));
+        .subscribe(result => {this.countSubject.next(result['results']['count']); this.usersSubject.next(result['results']['users'])});
     }    
 }
