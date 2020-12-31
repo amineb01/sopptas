@@ -29,6 +29,6 @@ export class ReclamationsDataSource implements DataSource<Reclamation> {
         this.reclamationService.getReclamations(pageIndex , pageSize ).pipe(
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe(results => this.reclamationsSubject.next(results));
+        .subscribe(results => this.reclamationsSubject.next(results['results']['reclamations']));
     }    
 }

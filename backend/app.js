@@ -10,7 +10,7 @@ require('./helpers/cronJob')()
 
 require('./router/index')(app)
 
-app.use(express.static('uploads'))
+app.use('/images', express.static('uploads'))
 // 27017 localhost
 // handle every request reach this line
 require('./helpers/errorHandling')(app)

@@ -18,22 +18,15 @@ export class ReclamationsComponent implements OnInit {
   pageSize = 10;
   dataSource: ReclamationsDataSource;
   reclamationsList:Reclamation[]=[];
+  public assetsUrl = environment.assetsUrl;
   constructor( private reclamationsService: ReclamationsService) {
   }
 
   ngOnInit() {
     this.dataSource = new ReclamationsDataSource(this.reclamationsService);
     this.dataSource.loadReclamations( this.pageNumber, this.pageSize );
-    this.dataSource.connect().subscribe(res=>{
-      let recs =[]
-      if(res['message']=='success'){
-        recs = res['results']['reclamations'].map(rec=> {
-          rec['imagePath'] = `${environment.assetsUrl}${rec['image'].replace('uploads/','')}`
-          return rec;
-        })
-      }
-      
-      this.reclamationsList= this.reclamationsList.concat(recs)
+    this.dataSource.connect().subscribe(reclamations=>{
+      this.reclamationsList= this.reclamationsList.concat(reclamations)
     })
   }
   
