@@ -3,4 +3,3 @@ package-lock.json
 access.log
 env.list.mongo
 .env
-/uploads

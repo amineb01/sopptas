@@ -1,11 +1,11 @@
 #######################################
 # Stage 1: Build Angular application  #
 #######################################
-FROM node:12.3-alpine AS build-satge
+FROM node:12 AS build-satge
 
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install && npm run build --prod
+RUN npm install && npm run build -- --prod
 
 ################################################
 # Stage 1: Serve Angular app from NGINX Srver  #
