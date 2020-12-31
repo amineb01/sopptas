@@ -1,6 +1,7 @@
 /backend/node_modules
 /backend/package-lock.json
 /backend/.env
+/backend/uploads
 /backend/access.log
 /backend/env.list.mongo
 /frontend/node_modules

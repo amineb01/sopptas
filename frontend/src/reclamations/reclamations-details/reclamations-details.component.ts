@@ -20,6 +20,8 @@ export class ReclamationsDetailsComponent implements OnInit {
   public reclamation: Reclamation=null;
   public reponseForm: FormGroup;
   public submitted: boolean = false;
+  public assetsUrl = environment.assetsUrl;
+
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private reclamationService: ReclamationsService) { }
 
   ngOnInit(): void {
@@ -31,7 +33,6 @@ export class ReclamationsDetailsComponent implements OnInit {
     this.reclamation_id = this.route.snapshot.paramMap.get('id');
     this.subscription = this.reclamationService.getReclamationById(this.reclamation_id).subscribe(res=>{
       this.reclamation = res
-      this.reclamation['imagePath'] = `${environment.assetsUrl}${this.reclamation['image'].replace('uploads/','')}`
     })
 
   }

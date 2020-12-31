@@ -35,7 +35,7 @@ const setReclamation = (req, res) => {
     title: req.body.title,
     body: req.body.body,
     user: req.body.user,
-    image: req.file.path,
+    image: req.file.filename,
     category: req.body.category,
     location: {
       type: "Point",

@@ -47,7 +47,7 @@ describe('token ', () => {
 
       describe('wrong token exist in headers', () => {
         before(() => {
-          req.headers.token = 'token'
+          req.headers.authorization = 'token'
         })
 
         it('token should be invalid', () => {
@@ -60,7 +60,7 @@ describe('token ', () => {
       describe('valid token exist in headers', () => {
         before(async () => {
           let token =  await generateToken(req, res)
-          req.headers.token = token
+          req.headers.authorization = token
         })
 
         it('token should be decrypted', () => {
