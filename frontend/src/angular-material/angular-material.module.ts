@@ -4,14 +4,15 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule} from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+
+import { MatListModule } from '@angular/material/list';
+
 
 @NgModule({
   declarations: [],
@@ -21,13 +22,12 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    MatListModule,
     MatCardModule,
     MatSortModule,
     MatTableModule,
-    MatTooltipModule,
     MatPaginatorModule,
     MatInputModule,
+    MatListModule,
     MatProgressSpinnerModule
   ],
   exports: [
@@ -35,13 +35,12 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    MatListModule,
     MatCardModule,
     MatSortModule,
     MatTableModule,
-    MatTooltipModule,
     MatPaginatorModule,
     MatInputModule,
+    MatListModule,
     MatProgressSpinnerModule
   ]
 })
