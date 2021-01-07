@@ -37,10 +37,10 @@ jobs:
       - name: run docker compose
         run: docker-compose up --build -d  
 
-      - name: Sleep for 20 seconds and seed db
-        run: |
-          sleep 20
-          mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/sopptas
+      # - name: Sleep for 20 seconds and seed db
+      #   run: |
+      #     sleep 20
+      #     mongorestore --host 0.0.0.0 --db sopptas ./backend/db-fixture/dump/sopptas
            
         env:
           CD: true
