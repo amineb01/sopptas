@@ -88,6 +88,7 @@ const removePointId = (req, res) => {
 
 const findByZoneId = (req, res) => {
   deferred = Q.defer();
+  console.log(req.params.zoneId)
   Point.find({ zone: req.params.zoneId })
   .select('_id location name')
   .then(result => { deferred.resolve(result) })
