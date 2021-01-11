@@ -1,10 +1,10 @@
 var User = require('../models/User')
 var checkUserByEmail = require('../middlewares/checkUserByEmail')
-var { generateToken, verifyToken, isCollaboratorToken } = require('../middlewares/token')
+var { generateToken, verifyToken, isCollaboratorToken, isAdminToken } = require('../middlewares/token')
 var { generatePassword, checkPassword } = require('../middlewares/password')
 
 
-var { setUser, getUsers, addPointToUser, removePointFromUser, sendNotif } = require('../middlewares/users')
+var { setUser, getUsers, addPointToUser, removePointFromUser, sendNotif, deleteUser, update } = require('../middlewares/users')
 
 const userController = (express) => {
 const router = express.Router();
@@ -299,6 +299,162 @@ function (req, res, next) {
     .done()
   });
 
+
+  router.post(
+    "/",
+    function (req, res, next) {
+      verifyToken(req, res)
+        .then((decodedToken) => {
+          req.headers.role = decodedToken.role;
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
+          });
+        })
+        .done();
+    },
+    function (req, res, next) {
+      isAdminToken(req, res)
+        .then((result) => {
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
+          });
+        })
+        .done();
+    },
+   
+    function(req, res, next) {
+      generatePassword(req, res)
+      .then( () =>{
+        next()
+       })
+      .catch( error => {
+        return res.status(401).json({
+          message: 'An error has occured' ,
+          error:  error
+        });
+      })
+  
+    },
+    function (req, res, next) {
+      setUser(req)
+        .then((result) => {
+          return res.status(200).json(result);
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            message: "An error has occured",
+            error: error,
+          });
+        })
+        .done();
+    }
+  );
+
+
+  router.delete(
+    "/:id",
+    function (req, res, next) {
+      verifyToken(req, res)
+        .then((decodedToken) => {
+          req.headers.id = decodedToken.id;
+          req.headers.role = decodedToken.role;
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
+          });
+        })
+        .done();
+    },
+
+    function (req, res, next) {
+      isAdminToken(req, res)
+        .then((result) => {
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
+          });
+        })
+        .done();
+    },
+    function (req, res, next) {
+      deleteUser(req)
+        .then((result) => {
+          return res.status(200).json({
+            result: result,
+          });
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            message: "An error has occured",
+            error: error,
+          });
+        })
+        .done();
+    }
+  );
+
+  router.put(
+    "/:id",
+    function (req, res, next) {
+      verifyToken(req, res)
+        .then((decodedToken) => {
+          req.headers.id = decodedToken.id;
+          req.headers.role = decodedToken.role;
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
+          });
+        })
+        .done();
+    },
+
+    function (req, res, next) {
+      isAdminToken(req, res)
+        .then((result) => {
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
+          });
+        })
+        .done();
+    },
+    function (req, res, next) {
+      update(req)
+        .then((result) => {
+          return res.status(200).json({
+            result: result,
+          });
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            message: "An error has occured",
+            error: error,
+          });
+        })
+        .done();
+    }
+  );
+  
 return router
 }
 module.exports = userController;

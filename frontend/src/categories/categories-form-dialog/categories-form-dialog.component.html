@@ -1,0 +1,20 @@
+<div style=" position: relative">
+	<h2 mat-dialog-title class="col-md-2">Categorie</h2>
+	<button class="close-btn col-md-1 offset-md-9" (click)="onCancelClick(categorieForm.value, false)">x</button>
+	<form [formGroup]="categorieForm" *ngIf="categorieForm">
+		<div class="col-md-12">
+			<input type="text" class="form-control" [ngClass]="{'is-invalid': f.name.touched && f.name.errors}"
+				id="validationServer013" name="name" formControlName="name" placeholder="nom"  required>
+			<div class="mat-error"
+				*ngIf="categorieForm.controls.name.touched && categorieForm.controls.name.errors?.required">
+				le champ nom est obligatoire
+			</div>
+		</div>
+
+	</form>
+	<mat-dialog-actions align="end">
+		<button-component [classes]="'btn-lg btn-block btn-primary default-bg radius'" [isdisabled]='categorieForm.invalid'
+			(clicked)="onValidClick(categorieForm.value)">Valider</button-component>
+	</mat-dialog-actions>
+
+</div>

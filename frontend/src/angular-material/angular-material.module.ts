@@ -10,6 +10,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule} from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatMenuModule} from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+
 
 import { MatListModule } from '@angular/material/list';
 
@@ -28,7 +33,9 @@ import { MatListModule } from '@angular/material/list';
     MatPaginatorModule,
     MatInputModule,
     MatListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   exports: [
     MatSidenavModule,
@@ -41,7 +48,12 @@ import { MatListModule } from '@angular/material/list';
     MatPaginatorModule,
     MatInputModule,
     MatListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatMenuModule,
+    MatFormFieldModule,
+    MatSelectModule
+    
   ]
 })
 export class AngularMaterialModule { }
