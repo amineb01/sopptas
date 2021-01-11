@@ -26,10 +26,14 @@ export class UsersDataSource implements DataSource<User> {
     }
 
     loadUsers(filter = '',sortActive = 'asc',
-                sortDirection = 'asc', pageIndex = 0, pageSize = 5) {
+                sortDirection = 'asc', pageIndex = 1, pageSize = 5) {
 
         this.loadingSubject.next(true);
-
+        if (pageIndex == 0) {
+            pageIndex = 1
+        }else{
+            pageIndex++
+        }
         this.usersService.getUsers(filter, sortActive, sortDirection,
             pageIndex, pageSize).pipe(
             finalize(() => this.loadingSubject.next(false))
