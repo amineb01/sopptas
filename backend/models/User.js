@@ -8,8 +8,11 @@ const UserSchema = new Schema({
   password: { type:String, required:true },
   device_token: { type:String , default: ''  },
   reclamations: [{ type: Schema.Types.ObjectId, ref: 'Reclamation' }],
-  points: [{_id:{ type: Schema.Types.ObjectId, ref: 'Point' }, status:{ type: String, enum: ['active', 'inactive'], default: 'active' }}],
-  role: { type: String, enum: ['admin', 'restricted', 'citizen'], default: 'citizen' },
+  points: [{_id:{ type: Schema.Types.ObjectId, ref: 'Point' },
+  status:{ type: String, enum: ['active', 'inactive'], default: 'active' }}],
+  role: { type: String, enum: ['admin', 'restricted', 'citizen'], default: 'citizen' },//driver et guest
+  current_zone: { type: Schema.Types.ObjectId, ref: 'Zone'},
+
 });
 
 UserSchema.path('email').validate(async (value) => {

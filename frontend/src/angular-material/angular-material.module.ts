@@ -12,6 +12,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule} from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatMenuModule} from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+
 
 @NgModule({
   declarations: [],
@@ -28,7 +33,9 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     MatTooltipModule,
     MatPaginatorModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   exports: [
     MatSidenavModule,
@@ -42,7 +49,12 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     MatTooltipModule,
     MatPaginatorModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatMenuModule,
+    MatFormFieldModule,
+    MatSelectModule
+    
   ]
 })
 export class AngularMaterialModule { }
