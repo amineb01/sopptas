@@ -1,6 +1,6 @@
 var Point = require("../models/Point");
 
-var { setPoint, findByZoneId, findNearestPointZone, findAll} = require("../middlewares/points");
+var { getByRadius, findByZoneId, findNearestPointZone, findAll, addPoints} = require("../middlewares/points");
 var { verifyToken, isCollaboratorToken } = require("../middlewares/token");
 
 const pointController = (express) => {
@@ -48,7 +48,7 @@ const pointController = (express) => {
     },
 
     function (req, res, next) {
-      setPoint(req)
+      addPoints(req)
         .then((result) => {
           console.log("setPoint")
           return res.status(200).json(result);
@@ -203,6 +203,44 @@ router.get(
       .catch((error) => {
         return res.status(500).json({
           message: "An error has occured",
+          error: error,
+        });
+      })
+      .done();
+  }
+);
+
+
+router.get(
+  "/byradius/:latitude/:longitude",
+  function (req, res, next) {
+    verifyToken(req, res, next)
+      .then((decodedToken) => {
+        req.headers.id = decodedToken.id;
+        req.headers.role = decodedToken.role;
+        next();
+      })
+      .catch((error) => {
+        return res.status(401).json({
+          message: error,
+          error: "invalid token",
+        });
+      })
+      .done();
+  },
+  function (req, res, next) {
+    console.log("seif")
+    getByRadius(req, res)
+      .then((points) => {
+        return res.status(200).json({
+          points:points,
+  
+          });
+      })
+      .catch((error) => {
+        console.log(error)
+        return res.status(500).json({
+          message: "An error has occuredzzzzzzzzzzz",
           error: error,
         });
       })

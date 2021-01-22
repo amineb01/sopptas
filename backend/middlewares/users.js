@@ -55,6 +55,7 @@ const setUser = (req, res) => {
     })
     user.save()
     .then(result => {
+      req.body.id = result._id
       deferred.resolve(result)
     })
     .catch(error => {
@@ -90,7 +91,6 @@ const addPointToUser = (req, res) => {
 };
 
 const removePointFromUser = (req, res) => {
-  console.log(req.headers.id)
 
   console.log(req.params.id)
   const conditions = {
@@ -169,7 +169,20 @@ const update = (req, res) => {
 };
 
 
+const getUsersByPoint = (req) =>{
+  deferred = Q.defer();
+
+  const conditions = {
+    'points._id': { $in: req.params.id }
+  };
+
+  User.find(conditions).then(res=>{
+    deferred.resolve(res)
+  }).catch(err=>{
+    deferred.reject(err)
+  })
+  return deferred.promise
+} 
 
 
-
-module.exports = { getUsers, setUser, addPointToUser, removePointFromUser, sendNotif, deleteUser, update }
+module.exports = { getUsers, setUser, addPointToUser, removePointFromUser, sendNotif, deleteUser, update, getUsersByPoint }
