@@ -4,27 +4,21 @@ var Zone = require("../models/Zone");
 var Q = require("q");
 var deferred;
 
-const setPoint = (req) => {
+const setPoint = (p, req) => {
   deferred = Q.defer();
+
   let point = new Point({
     location: {
       type: "Point",
-      coordinates: [req.body.longitude,req.body.latitude]
+      coordinates: [p.longitude, p.latitude]
      },
-    name: req.body.name,
-    zone: req.body.zone,
+    name: p.name,
+    zone: p.zone,
   });
   point
     .save()
     .then((result) => {
-      req.params._id = result._id
-      addPointToZone(req).then(res=>
-        // console.log(req.body.zone,result)
-        
-        deferred.resolve(result)
-      ).catch((error) => {
-        deferred.reject(error.message);
-      });
+      deferred.resolve(result)
     })
     .catch((error) => {
       deferred.reject(error.message);
@@ -32,39 +26,60 @@ const setPoint = (req) => {
   return deferred.promise;
 };
 
-const addPointToZone = (req) => {
-  deferredPoint = Q.defer();
-  Zone.findById(req.body.zone)
-  .then(zone => { 
-    if (zone) {
-      zone.points.push(req.params._id);
-      zone.save().then(zone => { 
-        deferredPoint.resolve('success') 
-      }).catch(error => {
-        removePointId(req)
-        .then(res=> deferredPoint.reject(error.message))
-        .catch(error => {
-          deferred.reject(error.message);
-        })
-      })
-    }else{
-      removePointId(req)
-      .then(res=> deferredPoint.reject(error.message))
-      .catch(error => {
-        deferred.reject('zone not found ');
-      })
-    }
-  })
-  .catch(error => {
-    removePointId(req)
-    .then(res=> deferredPoint.reject(error.message))
-    .catch(error => {
-      deferred.reject(error.message);
+const addPoints = (req) =>{
+  var msg = false
+  deferred = Q.defer();
+  req.body.points.forEach(element => {
+    setPoint(element, req)
+    .then(res =>{
+      msg = true
     })
-  })
-  return deferredPoint.promise;
+    .catch((error) => {
 
-};
+      deferred.reject(error.message);
+    });
+  });
+  if (msg) {
+    deferred.resolve(req.points)
+  }
+  return deferred.promise;
+}
+
+// const addPointToZone = (req, point) => {
+//   deferredPoint = Q.defer();
+//   console.log("point" + point.zone)
+
+//   Zone.findById(point.zone)
+//   .then(zone => { 
+//     if (zone) {
+//       zone.points.push(req.params._id);
+//       zone.save().then(zone => { 
+//         deferredPoint.resolve('success') 
+//       }).catch(error => {
+//         removePointId(req)
+//         .then(res=> deferredPoint.reject(error.message))
+//         .catch(error => {
+//           deferred.reject(error.message);
+//         })
+//       })
+//     }else{
+//       removePointId(req)
+//       .then(res=> deferredPoint.reject(error.message))
+//       .catch(error => {
+//         deferred.reject('zone not found ');
+//       })
+//     }
+//   })
+//   .catch(error => {
+//     removePointId(req)
+//     .then(res=> deferredPoint.reject(error.message))
+//     .catch(error => {
+//       deferred.reject(error.message);
+//     })
+//   })
+//   return deferredPoint.promise;
+
+// };
 
 
 
@@ -135,8 +150,37 @@ const findAll = (req, res) => {
 
 };
 
+const getByRadius = (req) =>
+{
+  deferred = Q.defer();
+  Point.find({
+    location: {
+      $near: {
+        $maxDistance: 400,
+        $geometry: {
+          type: "Point",
+          coordinates: [req.params.longitude, req.params.latitude]
+        }
+      }
+    }
+ })
+ 
+ .select('_id location name')
+ .then(result => { 
+
+  deferred.resolve(result) })
+ .catch(error => {
+  console.log("seif err")
+
+   deferred.reject(error.message);
+ })
+  
+  return deferred.promise;
+
+
+}
 
 
 
 
-module.exports = { setPoint, findByZoneId, findNearestPointZone, findAll };
+module.exports = { setPoint, findByZoneId, findNearestPointZone, findAll, addPoints, getByRadius };
