@@ -1,0 +1,64 @@
+<div style=" position: relative">
+	<h2 mat-dialog-title class="col-md-2">Utilisateur</h2>
+	<button class="close-btn col-md-1 offset-md-9" (click)="onCancelClick(UserForm.value, false)">x</button>
+	<form [formGroup]="UserForm" *ngIf="UserForm">
+		<div class="col-md-12 form-group">
+			<input type="text" class="form-control" [ngClass]="{'is-invalid': f.name.touched && f.name.errors}"
+				id="validationServer013" name="name" formControlName="name" placeholder="nom" required>
+			<div class="mat-error" *ngIf="UserForm.controls.name.touched && UserForm.controls.name.errors?.required">
+				le champ nom est obligatoire
+			</div>
+		</div>
+		<div class="col-md-12 form-group">
+			<input formControlName="email" type="email" class="form-control" id="inputEmail4" placeholder="Email"
+				[ngClass]="{ 'is-invalid': f.email.touched && f.email.errors }">
+			<div *ngIf="f.email.touched && f.email.errors" class="invalid-feedback">
+				<div *ngIf="f.email.errors.required">Email est obligatoire</div>
+				<div *ngIf="f.email.errors.email">Email n'est pas valid </div>
+			</div>
+		</div>
+
+		<div class="col-md-12 form-group">
+			<input formControlName="password" type="password" class="form-control" id="inputPassword4" placeholder="Password"
+				[ngClass]="{ 'is-invalid': f.password.touched && f.password.errors }">
+			<div *ngIf="f.password.touched && f.password.errors" class="invalid-feedback">
+				<div *ngIf="f.password.errors.required">mot de passe est obligatoire</div>
+				<div *ngIf="f.password.errors.minlength">Le mot de passe doit être au moins de 6 caractères</div>
+			</div>
+		</div>
+
+		<div class="col-md-12 form-group">
+			<mat-form-field appearance="fill">
+				<mat-label>Selectionner un role</mat-label>
+				<mat-select formControlName="role">
+					<mat-option *ngFor="let role of roles" [value]="role.value">
+						{{role.label}}
+					</mat-option>
+				</mat-select>
+
+			</mat-form-field>
+		</div>
+
+		<div class="col-md-12 form-group">
+			<mat-form-field appearance="fill">
+				<mat-label>Selectionner une zone</mat-label>
+				<mat-select formControlName="zone">
+					<mat-option *ngFor="let zone of zones" [value]="zone._id">
+						{{zone.name}}
+					</mat-option>
+				</mat-select>
+
+			</mat-form-field>
+		</div>
+
+
+
+
+
+	</form>
+	<mat-dialog-actions align="end">
+		<button-component [classes]="'btn-lg btn-block btn-primary default-bg radius'" [isdisabled]='UserForm.invalid'
+			(clicked)="onValidClick(UserForm.value)">Valider</button-component>
+	</mat-dialog-actions>
+
+</div>

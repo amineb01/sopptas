@@ -20,7 +20,19 @@ export class ZonesService {
             .set('_limit', pageSize.toString())
     });
   }
+  getZonesForUser(){
+    return this.http.get<any>('zones', {})
+  }
+  addZone(name){
+    return this.http.post<any>('zones', { name: name })
 
+  }
+  editZone(zone){
+    return this.http.put<any>(`zones/${zone._id}`, { name: zone.name })
+  }
+  deleteZone(id){
+    return this.http.delete<any>(`zones/${id}`,{})
+  }
   
 
 }

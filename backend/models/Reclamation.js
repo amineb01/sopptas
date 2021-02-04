@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ReclamationSchema = new Schema({
-  title:{ type:String, required:true },
+  //title:{ type:String, required:true },
   body: { type:String, required:true },
   date: Date,
   image:{ type:String, required:true },
   user: { type: Schema.Types.ObjectId, ref: 'User', required:true },
   category: { type: Schema.Types.ObjectId, ref: 'Category', required:true },
-  comments:[{type: Schema.Types.ObjectId, ref: 'Comment', default:null}],
+  //comments:[{type: Schema.Types.ObjectId, ref: 'Comment', default:null}],
   location: {
     type: {type: String, default: 'Point'},
     coordinates: {type: [Number], default: [0, 0]}

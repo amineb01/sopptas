@@ -20,5 +20,16 @@ export class CategoriesService {
             .set('_limit', pageSize.toString())
     });
   }
+  addCategory(name){
+    return this.http.post<any>('categories', { name: name })
+
+  }
+  editCategory(cat){
+    return this.http.put<any>(`categories/${cat._id}`,{ name: cat.name })
+
+  }
+  deleteCategory(id){
+    return this.http.delete<any>(`categories/${id}`,{})
+  }
 
 }

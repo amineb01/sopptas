@@ -27,19 +27,19 @@ const reclamationController = (express) => {
       .done()
     },
 
-    function(req, res, next) {
-      isCollaboratorToken(req, res)
-      .then( userId =>{
-        next()
-       })
-      .catch( error => {
-        return res.status(401).json({
-          message: error,
-          error: 'invalid token'
-        });
-      })
-      .done()
-    },
+    // function(req, res, next) {
+    //   isCollaboratorToken(req, res)
+    //   .then( userId =>{
+    //     next()
+    //    })
+    //   .catch( error => {
+    //     return res.status(401).json({
+    //       message: error,
+    //       error: 'invalid token'
+    //     });
+    //   })
+    //   .done()
+    // },
 
     function(req, res, next) {
       getReclamations(req, res)
@@ -143,19 +143,19 @@ const reclamationController = (express) => {
       .done();
   },
 
-  function (req, res, next) {
-    isCollaboratorToken(req, res)
-      .then((result) => {
-        next();
-      })
-      .catch((error) => {
-        return res.status(401).json({
-          message: error,
-          error: "invalid token",
-        });
-      })
-      .done();
-  },
+  // function (req, res, next) {
+  //   isCollaboratorToken(req, res)
+  //     .then((result) => {
+  //       next();
+  //     })
+  //     .catch((error) => {
+  //       return res.status(401).json({
+  //         message: error,
+  //         error: "invalid token",
+  //       });
+  //     })
+  //     .done();
+  // },
 
     function (req, res, next) {
       console.log("ss"+ req.body)
