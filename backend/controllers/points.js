@@ -33,19 +33,19 @@ const pointController = (express) => {
         .done();
     },
 
-    function (req, res, next) {
-      isCollaboratorToken(req, res)
-        .then((result) => {
-          next();
-        })
-        .catch((error) => {
-          return res.status(401).json({
-            message: error,
-            error: "invalid token",
-          });
-        })
-        .done();
-    },
+    // function (req, res, next) {
+    //   isCollaboratorToken(req, res)
+    //     .then((result) => {
+    //       next();
+    //     })
+    //     .catch((error) => {
+    //       return res.status(401).json({
+    //         message: error,
+    //         error: "invalid token",
+    //       });
+    //     })
+    //     .done();
+    // },
 
     function (req, res, next) {
       addPoints(req)
@@ -81,19 +81,19 @@ const pointController = (express) => {
         .done();
     },
 
-    function (req, res, next) {
-      isCollaboratorToken(req, res)
-        .then((result) => {
-          next();
-        })
-        .catch((error) => {
-          return res.status(401).json({
-            message: error,
-            error: "invalid token",
-          });
-        })
-        .done();
-    },
+    // function (req, res, next) {
+    //   isCollaboratorToken(req, res)
+    //     .then((result) => {
+    //       next();
+    //     })
+    //     .catch((error) => {
+    //       return res.status(401).json({
+    //         message: error,
+    //         error: "invalid token",
+    //       });
+    //     })
+    //     .done();
+    // },
 
     function (req, res, next) {
       findAll(req)
@@ -129,19 +129,19 @@ const pointController = (express) => {
         .done();
     },
 
-    function (req, res, next) {
-      isCollaboratorToken(req, res)
-        .then((result) => {
-          next();
-        })
-        .catch((error) => {
-          return res.status(401).json({
-            message: error,
-            error: "invalid token",
-          });
-        })
-        .done();
-    },
+    // function (req, res, next) {
+    //   isCollaboratorToken(req, res)
+    //     .then((result) => {
+    //       next();
+    //     })
+    //     .catch((error) => {
+    //       return res.status(401).json({
+    //         message: error,
+    //         error: "invalid token",
+    //       });
+    //     })
+    //     .done();
+    // },
 
     function (req, res, next) {
       findByZoneId(req)
@@ -178,19 +178,19 @@ router.get(
       .done();
   },
 
-  function (req, res, next) {
-    isCollaboratorToken(req, res)
-      .then((result) => {
-        next();
-      })
-      .catch((error) => {
-        return res.status(401).json({
-          message: error,
-          error: "invalid token",
-        });
-      })
-      .done();
-  },
+  // function (req, res, next) {
+  //   isCollaboratorToken(req, res)
+  //     .then((result) => {
+  //       next();
+  //     })
+  //     .catch((error) => {
+  //       return res.status(401).json({
+  //         message: error,
+  //         error: "invalid token",
+  //       });
+  //     })
+  //     .done();
+  // },
 
   function (req, res, next) {
     findNearestPointZone(req, res)

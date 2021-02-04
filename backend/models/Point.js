@@ -10,7 +10,7 @@ var PointSchema = new Schema({
     type: {type: String, default: 'Point'},
     coordinates: {type: [Number], default: [0, 0]}
    },
-  name:{ type:String, required:true },
+  number:{ type:String, required:true },
   zone: { type: Schema.Types.ObjectId, ref: 'Zone', required:true },
 });
 
