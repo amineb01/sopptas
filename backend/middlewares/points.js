@@ -12,7 +12,7 @@ const setPoint = (p, req) => {
       type: "Point",
       coordinates: [p.longitude, p.latitude]
      },
-    name: p.name,
+    number: p.number,
     zone: p.zone,
   });
   point
@@ -104,7 +104,7 @@ const removePointId = (req, res) => {
 const findByZoneId = (req, res) => {
   deferred = Q.defer();
   Point.find({ zone: req.params.zoneId })
-  .select('_id location name')
+  .select('_id location number')
   .then(result => { deferred.resolve(result) })
   .catch(error => {
     deferred.reject(error.message);
@@ -127,7 +127,7 @@ const findNearestPointZone = (req, res) => {
  })
  .limit(1)
  .select('_id ')
- .populate({path:'zone ',populate: { path: 'points', model: 'Point', select: 'name location' }})
+ .populate({path:'zone ',populate: { path: 'points', model: 'Point', select: 'number location' }})
  .then(result => { deferred.resolve(result) })
  .catch(error => {
    deferred.reject(error.message);
@@ -164,7 +164,7 @@ const getByRadius = (req) =>
     }
  })
  
- .select('_id location name')
+ .select('_id location number')
  .then(result => { 
 
   deferred.resolve(result) })

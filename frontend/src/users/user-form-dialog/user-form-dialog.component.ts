@@ -14,7 +14,8 @@ export class UserFormDialogComponent implements OnInit, OnDestroy {
   UserForm: FormGroup;
   roles: any = [{ label: 'Administrateur', value: "admin" },
   { label: 'Citoyen', value: "citizen" },
-  { label: 'Agent', value: "restricted" }]
+  { label: 'Agent', value: "restricted" },
+  { label: 'Chauffeur', value: "driver" }]
   zones: any
   getSubscription: Subscription
 
