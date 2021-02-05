@@ -35,7 +35,7 @@ export class UserFormDialogComponent implements OnInit, OnDestroy {
         password: ['', [Validators.minLength(6)]],
         name: [this.data.user.name, [Validators.required]],
         role: [this.data.user.role, [Validators.required]],
-        zone: [this.data.user.zone._id, [Validators.required, Validators.minLength(6)]],
+        // zone: [this.data.user.zone._id, [Validators.required, Validators.minLength(6)]],
 
       })
 
@@ -45,7 +45,7 @@ export class UserFormDialogComponent implements OnInit, OnDestroy {
         password: ['', [Validators.required, Validators.minLength(6)]],
         name: ['', [Validators.required]],
         role: ['', [Validators.required]],
-        zone: ['', [Validators.required, Validators.minLength(6)]],
+        // zone: ['', [Validators.required, Validators.minLength(6)]],
 
       })
     }

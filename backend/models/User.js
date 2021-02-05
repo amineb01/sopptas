@@ -12,6 +12,8 @@ const UserSchema = new Schema({
   status:{ type: String, enum: ['active', 'inactive'], default: 'active' },
   role: { type: String, enum: ['admin', 'restricted', 'citizen', 'driver'], default: 'citizen' },//driver et guest
   current_zone: { type: Schema.Types.ObjectId, ref: 'Zone'},
+  // zone: { type: Schema.Types.ObjectId, ref: 'Zone'},
+
 
 });
 

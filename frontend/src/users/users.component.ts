@@ -20,7 +20,7 @@ export class UsersComponent implements OnInit {
   @ViewChild('input') input: ElementRef;
 
   dataSource: UsersDataSource;
-  displayedColumns= [ "name", "email", "role", "zone", "actions"];
+  displayedColumns= [ "name", "email", "role", "actions"];
   addSubscription: Subscription
   DeleteSubscription: Subscription
   editSubscription: Subscription
@@ -58,7 +58,7 @@ export class UsersComponent implements OnInit {
   }
 
   addUser(){
-    const dialogRef = this.matDialog.open(UserFormDialogComponent, { height: "470px", width: "550px" });
+    const dialogRef = this.matDialog.open(UserFormDialogComponent, { height: "400px", width: "550px" });
 
 		dialogRef.afterClosed().subscribe(result => {
 			if (result.values) {
@@ -91,7 +91,7 @@ export class UsersComponent implements OnInit {
 edit(user) {
     const dialogRef = this.matDialog.open(UserFormDialogComponent, {
         data: { user: user },
-        height: "470px", width: "550px"
+        height: "400px", width: "550px"
     });
 
     dialogRef.afterClosed().subscribe(result => {
