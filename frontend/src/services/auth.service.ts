@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import decode from 'jwt-decode';
 
 import { map } from 'rxjs/operators';
@@ -37,6 +36,7 @@ export class AuthService {
     .pipe(
       map(reponse => {
         if(reponse.message == "user authenticated" && ['admin', 'restricted'].includes(reponse.data['role'])){
+          reponse.data['token'] = reponse.token
           localStorage.setItem('currentUser', JSON.stringify(reponse.data));
         }
         return reponse;

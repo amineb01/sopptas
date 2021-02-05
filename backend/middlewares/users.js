@@ -15,7 +15,7 @@ const getUsers = (req, res) => {
   .select('_id name email role')
   .limit(req.query._limit * 1)
   .skip(((req.query._start * 1) - 1) * (req.query._limit * 1))
-  .populate("zone","name")
+  // .populate("zone","name")
   .then(users => {
     deferred.resolve( {
        users,
@@ -45,14 +45,16 @@ const sendNotif = (req, res) => {
 }
 
 const setUser = (req, res) => {
+  console.log(req.body.zone)
   deferred = Q.defer();
     let user = new User({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      zone: req.body.zone,
+      // zone: req.body.zone,
       role: req.body.role
     })
+    console.log(user)
     user.save()
     .then(result => {
       req.body.id = result._id

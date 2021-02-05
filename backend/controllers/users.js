@@ -66,10 +66,9 @@ const userController = (express) => {
               id: req.body.id,
               email: req.body.email,
               name: req.body.name,
-              token: token,
               role: req.body.role,
-
-            }
+            },
+            token: token,
           });
         })
         .catch(error => {
@@ -115,8 +114,8 @@ const userController = (express) => {
               email: req.body.email,
               name: req.body.name,
               role: req.body.role,
-              token: token
-            }
+            },
+            token: token
           });
         })
         .catch(error => {
