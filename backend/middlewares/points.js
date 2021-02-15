@@ -141,6 +141,7 @@ const findNearestPointZone = (req, res) => {
 const findAll = (req, res) => {
   deferred = Q.defer();
   Point.find()
+  .populate("zone","name")
   .then(result => { deferred.resolve(result) })
   .catch(error => {
     deferred.reject(error.message);
