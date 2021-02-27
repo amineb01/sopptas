@@ -6,12 +6,12 @@ var { generatePassword } = require('../middlewares/password')
 const getUsers = (req, res) => {
 
   var length = 0
-  User.count({}, function(err, count){
+  User.count({name: { $regex: req.query.filter }}, function(err, count){
     length = count
   });
   
   deferred = Q.defer();
-  User.find()
+  User.find({name: { $regex: req.query.filter }})
   .select('_id name email role')
   .limit(req.query._limit * 1)
   .skip(((req.query._start * 1) - 1) * (req.query._limit * 1))

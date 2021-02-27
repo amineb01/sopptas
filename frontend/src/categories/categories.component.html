@@ -1,12 +1,12 @@
 <h1> Catégories des reclamations </h1>
-<div class="row actions ">
-  <form class="search-post-form col-md-2">
+<div class="actions">
+  <form class="search-post-form ">
     <mat-form-field class="full-width">
       <mat-label>Categories</mat-label>
-      <input #input matInput placeholder="Ex. post name" class="search-post-form">
+      <input #input matInput placeholder="Categorie" class="search-post-form">
     </mat-form-field>
   </form>
-  <div class="add-btn col-md-1 offset-md-9">
+  <div class="add-btn">
     <button-component [type]="'button'"
       [classes]="'btn-lg btn-block btn-primary default-bg radius'" (clicked)="addCat()"> Ajouter
     </button-component>

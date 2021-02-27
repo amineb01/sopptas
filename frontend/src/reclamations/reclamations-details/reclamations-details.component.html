@@ -16,10 +16,10 @@
         </div>
       </div>
   </div>  
-  <agm-map [latitude]="reclamation.latitude" [longitude]="reclamation.longitude">
-    <agm-marker [latitude]="reclamation.latitude" [longitude]="reclamation.longitude"></agm-marker>
+  <agm-map [latitude]="this.reclamation.location.coordinates[1]" [longitude]="this.reclamation.location.coordinates[0]">
+    <agm-marker [latitude]="this.reclamation.location.coordinates[1]" [longitude]="this.reclamation.location.coordinates[0]"></agm-marker>
   </agm-map> 
-    <div  *ngIf="reclamation.comments.length > 0" >
+    <!-- <div  *ngIf="reclamation.comments.length > 0" >
       <h3>Réponses:</h3>
       <p  *ngFor="let comment of reclamation.comments"  > {{comment}}</p>
     </div>  
@@ -34,7 +34,7 @@
         <div class="form-group d-block">
         
         </div>
-    </form>
+    </form> -->
 
 
 </div>        

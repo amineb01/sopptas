@@ -66,7 +66,7 @@ const userController = (express) => {
               id: req.body.id,
               email: req.body.email,
               name: req.body.name,
-              role: req.body.role,
+              role: req.body.role || "citizen",
             },
             token: token,
           });

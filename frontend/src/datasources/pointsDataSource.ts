@@ -27,14 +27,18 @@ export class PointsDataSource implements DataSource<Point> {
     }
 
     loadPoints(zoneId, filter = '',sortActive = 'asc',
-                sortDirection = 'asc', pageIndex = 0, pageSize = 5) {
+                sortDirection = 'asc', pageIndex = 1, pageSize = 10) {
 
         this.loadingSubject.next(true);
-
+        if (pageIndex == 0) {
+            pageIndex = 1
+        }else{
+            pageIndex++
+        }
         this.pointsService.getPoints(zoneId, filter, sortActive, sortDirection,
             pageIndex, pageSize).pipe(
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe(result => {this.countSubject.next(result.length); this.pointsSubject.next(result)});
+        .subscribe(result => { this.countSubject.next(result.count  ); this.pointsSubject.next(result.points)});
     }    
 }
