@@ -39,6 +39,6 @@ export class PointsDataSource implements DataSource<Point> {
             pageIndex, pageSize).pipe(
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe(result => { this.countSubject.next(result.count  ); this.pointsSubject.next(result.points)});
+        .subscribe(result => { this.countSubject.next(result['count']  ); this.pointsSubject.next(result['points'])});
     }    
 }
