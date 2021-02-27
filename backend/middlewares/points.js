@@ -102,11 +102,32 @@ const removePointId = (req, res) => {
 
 
 const findByZoneId = (req, res) => {
+  if (req.query.filter) {
+    Point.count({ zone: req.params.zoneId , number: { $regex: req.query.filter } }, function(err, count){
+      length = count
+    });
+  } else {
+    Point.count({ zone: req.params.zoneId }, function(err, count){
+      length = count
+    });
+  }
+ 
   deferred = Q.defer();
-  console.log(req.params.zoneId)
-  Point.find({ zone: req.params.zoneId })
-  .select('_id location number')
-  .then(result => { deferred.resolve(result) })
+  if (req.query.filter) {
+   pointss = Point.find({ zone: req.params.zoneId , number: { $regex: req.query.filter } })
+  } else {
+    pointss = Point.find({ zone: req.params.zoneId })
+  }
+  console.log(length)
+ pointss.select('_id location number')
+  .limit(req.query._limit * 1)
+  .skip(((req.query._start * 1) - 1) * (req.query._limit * 1))
+  .then(points => {
+    deferred.resolve( {
+       points,
+       count: length
+     });
+   })
   .catch(error => {
     deferred.reject(error.message);
   })

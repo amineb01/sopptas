@@ -16,7 +16,7 @@ export class PointsService {
         params: new HttpParams()
             .set('filter', filter)
             .set('sortOrder', sortOrder)
-            .set('_start', (pageSize*pageNumber).toString())
+            .set('_start', (pageNumber).toString())
             .set('_limit', pageSize.toString())
     });
   }

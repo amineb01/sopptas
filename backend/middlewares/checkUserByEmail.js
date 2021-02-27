@@ -14,9 +14,11 @@ const checkUserByEmail = ( req, res ) => {
       if(!user){
         deferred.reject("user not found");
       }else{
+        console.log(user)
         req.body.cryptedPassword = user.password
         req.body.id = user._id
         req.body.role = user.role
+        req.body.name = user.name
         deferred.resolve()
       }
 
