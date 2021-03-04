@@ -128,24 +128,27 @@ const userController = (express) => {
     },
   );
 
-  router.get('/:id', (req, res) => {
-    User.findById(req.params.id)
-    .populate("points")
-    
-    .then(result => {
-      res.status(201).json({
-        message: 'hhh',
-        data: result
-      });
-    }
+  router.get('/:id',
+    (req, res) => {
 
-    ).catch(error => {
-      res.status(500).json({
-        message: 'An error has occured',
-        error: error
-      });
+      User.findById(req.params.id)
+        .select("points")
+        .populate('points._id')
+
+        .then(result => {
+          res.status(201).json({
+            message: 'succec',
+            data: result
+          });
+        }
+
+        ).catch(error => {
+          res.status(500).json({
+            message: 'An error has occured',
+            error: error
+          });
+        })
     })
-  })
 
 
 
@@ -478,7 +481,7 @@ const userController = (express) => {
         .done();
     },
 
-    
+
     function (req, res, next) {
       getUsersByPoint(req)
         .then((result) => {
