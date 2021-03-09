@@ -1,43 +1,43 @@
 var User = require('../models/User')
 var Q = require('q');
 var deferred
-var { generatePassword } = require('../middlewares/password')
+var sendMail = require('../helpers/sendMail')
+var { checkPassword, generatePassword } = require('./password')
+
 
 const getUsers = (req, res) => {
 
   var length = 0
-  User.count({name: { $regex: req.query.filter }}, function(err, count){
+  User.count({ name: { $regex: req.query.filter } }, function (err, count) {
     length = count
   });
-  
+
   deferred = Q.defer();
-  User.find({name: { $regex: req.query.filter }})
-  .select('_id name email role')
-  .limit(req.query._limit * 1)
-  .skip(((req.query._start * 1) - 1) * (req.query._limit * 1))
-  // .populate("zone","name")
-  .then(users => {
-    deferred.resolve( {
-       users,
-       count: length
-     });
-   })
+  User.find({ name: { $regex: req.query.filter } })
+    .select('_id name email role')
+    .limit(req.query._limit * 1)
+    .skip(((req.query._start * 1) - 1) * (req.query._limit * 1))
+    // .populate("zone","name")
+    .then(users => {
+      deferred.resolve({
+        users,
+        count: length
+      });
+    })
     .catch(error => {
       deferred.reject(error);
     })
   return deferred.promise;
 }
 
-
-
 const sendNotif = (req, res) => {
   console.log(req.params.idPoint)
   deferred = Q.defer();
-  User.find({"points._id": req.params.idPoint} )
-  .select('_id ')
-  .then(users => {
-    deferred.resolve(users);
-   })
+  User.find({ "points._id": req.params.idPoint })
+    .select('_id ')
+    .then(users => {
+      deferred.resolve(users);
+    })
     .catch(error => {
       deferred.reject(error);
     })
@@ -47,15 +47,15 @@ const sendNotif = (req, res) => {
 const setUser = (req, res) => {
   console.log(req.body.zone)
   deferred = Q.defer();
-    let user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      // zone: req.body.zone,
-      role: req.body.role
-    })
-    console.log(user)
-    user.save()
+  let user = new User({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    // zone: req.body.zone,
+    role: req.body.role
+  })
+  console.log(user)
+  user.save()
     .then(result => {
       req.body.id = result._id
       deferred.resolve(result)
@@ -73,18 +73,18 @@ const addPointToUser = (req, res) => {
     'points._id': { $ne: req.body.id }
   };
   const update = {
-      $addToSet: { points: { _id:req.body.id } }
+    $addToSet: { points: { _id: req.body.id } }
   }
 
   deferred = Q.defer();
-  User.updateOne( 
+  User.updateOne(
     conditions,
-    update, 
-    { multi: true }, (err, result) =>{
+    update,
+    { multi: true }, (err, result) => {
       if (err) {
         deferred.reject(err.message);
       } else {
-        deferred.resolve(result) 
+        deferred.resolve(result)
       }
     }
   );
@@ -100,18 +100,18 @@ const removePointFromUser = (req, res) => {
     'points._id': { $eq: req.params.id }
   };
   const update = {
-      $pull: { points: { _id:req.params.id } }
+    $pull: { points: { _id: req.params.id } }
   }
 
   deferred = Q.defer();
-  User.updateOne( 
+  User.updateOne(
     conditions,
-    update, 
-    { multi: true }, (err, result) =>{
+    update,
+    { multi: true }, (err, result) => {
       if (err) {
         deferred.reject(err.message);
       } else {
-        deferred.resolve(result) 
+        deferred.resolve(result)
       }
     }
   );
@@ -127,7 +127,7 @@ const deleteUser = (req, res) => {
     .then((data) => {
       if (!data) {
         deferred.reject(
-          "Cannot delete user with id= " +req.params.id +" Maybe User was not found!"
+          "Cannot delete user with id= " + req.params.id + " Maybe User was not found!"
         );
         return deferred.promise;
       } else {
@@ -147,7 +147,7 @@ const update = (req, res) => {
     deferred.reject("Data to update can not be empty!");
     return deferred.promise;
   }
-  if (req.body.password != "" ) {
+  if (req.body.password != "") {
     generatePassword(req, res)
 
   }
@@ -156,8 +156,8 @@ const update = (req, res) => {
       if (!result) {
         deferred.reject(
           "Cannot update User with id= " +
-            req.params.id +
-            " Maybe User was not found!"
+          req.params.id +
+          " Maybe User was not found!"
         );
         return deferred.promise;
       } else {
@@ -171,20 +171,81 @@ const update = (req, res) => {
 };
 
 
-const getUsersByPoint = (req) =>{
+const getUsersByPoint = (req) => {
   deferred = Q.defer();
 
   const conditions = {
     'points._id': { $in: req.params.id }
   };
 
-  User.find(conditions).then(res=>{
+  User.find(conditions).then(res => {
     deferred.resolve(res)
-  }).catch(err=>{
+  }).catch(err => {
     deferred.reject(err)
   })
   return deferred.promise
-} 
+}
 
 
-module.exports = { getUsers, setUser, addPointToUser, removePointFromUser, sendNotif, deleteUser, update, getUsersByPoint }
+const sendForgetPassword = (req) => {
+  deferred = Q.defer();
+
+  User.findOne({
+    email: req.body.email
+  }).then(res => {
+    if (!res) {
+      deferred.reject(
+        "Cannot find User with email= " +
+        req.body.email +
+        " Maybe User was not found!"
+      );
+      return deferred.promise;
+    } else {
+      sendMail(req.body.email).then(result => {
+        deferred.resolve(result)
+      }).catch(err => {
+        deferred.reject(err)
+      })
+    }
+  }).catch(err => {
+    deferred.reject(err)
+  })
+  return deferred.promise
+}
+const updatePassword = (req) => {
+  deferred = Q.defer();
+  console.log(req.headers.id)
+  User.findOne({
+    _id: req.headers.id,
+  }).then(res => {
+    req.body.cryptedPassword = res.password
+    req.body.password = req.body.old_password
+
+    checkPassword(req).then(result => {
+      req.body.password = req.body.new_password
+      generatePassword(req).then(result => { 
+        User.findOneAndUpdate({ _id: req.headers.id }, { password: req.body.password }).then(result => {
+          deferred.resolve("password updated successfully")
+        }).catch(err => {
+          deferred.reject(err)
+        })
+      }).catch(err => {
+        deferred.reject(err)
+      })
+
+
+
+    }).catch(err => {
+      deferred.reject(err)
+
+    })
+
+  }).catch(err => {
+    deferred.reject(err)
+  })
+
+
+  return deferred.promise
+}
+
+module.exports = { getUsers, setUser, addPointToUser, removePointFromUser, sendNotif, deleteUser, update, getUsersByPoint, sendForgetPassword, updatePassword }
