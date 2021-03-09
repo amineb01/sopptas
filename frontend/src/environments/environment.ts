@@ -4,3 +4,5 @@ export const environment = {
   assetsUrl: 'http://0.0.0.0/images/'
 
 };
+// apiUrl: 'http://localhost:3000/api/',
+// assetsUrl: 'http://localhost:3000/images/'

@@ -5,10 +5,12 @@ import { SharedComponentModule } from '../shared/shared-component/shared-compone
 import { AthentificationRoutingModule } from './authentification-routing.module';
 import { AngularMaterialModule } from '../angular-material/angular-material.module';
 import { AthentificationComponent } from './athentification.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 @NgModule({
   declarations: [
-    AthentificationComponent
+    AthentificationComponent,
+    ForgetPasswordComponent
   ],
   imports: [
     CommonModule,

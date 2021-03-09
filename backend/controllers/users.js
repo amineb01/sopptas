@@ -4,7 +4,7 @@ var { generateToken, verifyToken, isCollaboratorToken, isAdminToken } = require(
 var { generatePassword, checkPassword } = require('../middlewares/password')
 
 
-var { setUser, getUsers, addPointToUser, removePointFromUser, sendNotif, deleteUser, update, getUsersByPoint } = require('../middlewares/users')
+var { setUser, getUsers, addPointToUser, removePointFromUser, sendNotif, deleteUser, update, getUsersByPoint, sendForgetPassword, updatePassword } = require('../middlewares/users')
 
 const userController = (express) => {
   const router = express.Router();
@@ -491,6 +491,57 @@ const userController = (express) => {
         })
         .catch((error) => {
           return res.status(500).json({
+            message: "An error has occured",
+            error: error,
+          });
+        })
+        .done();
+    }
+  );
+
+  router.post(
+    "/forgetPassword",
+    function (req, res, next) {
+      sendForgetPassword(req)
+        .then((result) => {
+          console.log(result)
+          return res.status(200).json(result);
+        })
+        .catch((error) => {
+          return res.status(422).json({
+            message: "An error has occured",
+            error: error,
+          });
+        })
+        .done();
+    }
+  );
+
+  router.post(
+    "/updatePassword",
+    function (req, res, next) {
+      verifyToken(req, res)
+        .then((decodedToken) => {
+          req.headers.id = decodedToken.id;
+          req.headers.role = decodedToken.role;
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token jjjj",
+          });
+        })
+        .done();
+    },
+    function (req, res, next) {
+      updatePassword(req)
+        .then((result) => {
+          console.log(result)
+          return res.status(200).json(result);
+        })
+        .catch((error) => {
+          return res.status(422).json({
             message: "An error has occured",
             error: error,
           });

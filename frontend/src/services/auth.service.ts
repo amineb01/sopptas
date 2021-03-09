@@ -43,6 +43,9 @@ export class AuthService {
       })
     )
   }
+  sendMailForgetPassword(email){
+    return this.http.post<any>('users/forgetPassword', { email: email})
+  }
 
   logout() {
     localStorage.removeItem('currentUser');
