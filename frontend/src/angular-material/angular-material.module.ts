@@ -15,8 +15,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
-
 import { MatListModule } from '@angular/material/list';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -35,7 +35,9 @@ import { MatListModule } from '@angular/material/list';
     MatListModule,
     MatProgressSpinnerModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
+
   ],
   exports: [
     MatSidenavModule,
@@ -52,7 +54,9 @@ import { MatListModule } from '@angular/material/list';
     MatDialogModule,
     MatMenuModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
+
     
   ]
 })
