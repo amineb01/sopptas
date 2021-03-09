@@ -508,7 +508,7 @@ const userController = (express) => {
           return res.status(200).json(result);
         })
         .catch((error) => {
-          return res.status(422).json({
+          return res.status(200).json({
             message: "An error has occured",
             error: error,
           });
