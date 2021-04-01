@@ -3,6 +3,7 @@ var Q = require('q');
 var deferred
 var sendMail = require('../helpers/sendMail')
 var { checkPassword, generatePassword } = require('./password')
+var adminsdk = require("../helpers/firebase-admin")
 
 
 const getUsers = (req, res) => {
@@ -31,11 +32,15 @@ const getUsers = (req, res) => {
 }
 
 const sendNotif = (req, res) => {
-  console.log(req.params.idPoint)
+  console.log(req.body.points)
   deferred = Q.defer();
-  User.find({ "points._id": req.params.idPoint })
-    .select('_id ')
+  User.find({ "points._id": { $in: req.body.points } })
     .then(users => {
+      users.forEach(element => {
+        sendNotifToUser(element, adminsdk)
+      })
+
+      //send notif user by user to do 
       deferred.resolve(users);
     })
     .catch(error => {
@@ -52,7 +57,8 @@ const setUser = (req, res) => {
     email: req.body.email,
     password: req.body.password,
     // zone: req.body.zone,
-    role: req.body.role
+    role: req.body.role,
+    device_token: req.body.device_token
   })
   console.log(user)
   user.save()
@@ -148,25 +154,48 @@ const update = (req, res) => {
     return deferred.promise;
   }
   if (req.body.password != "") {
-    generatePassword(req, res)
+    generatePassword(req, res).then(res => {
+      User.findByIdAndUpdate(req.params.id, req.body, { useFindAndModify: false })
+        .then((result) => {
+          if (!result) {
+            deferred.reject(
+              "Cannot update User with id= " +
+              req.params.id +
+              " Maybe User was not found!"
+            );
+            return deferred.promise;
+          } else {
+            deferred.resolve({ message: "User was updated successfully." });
+          }
+        })
+        .catch((error) => {
+          deferred.reject(error.message);
+        });
+      return deferred.promise;
 
-  }
-  User.findByIdAndUpdate(req.params.id, req.body, { useFindAndModify: false })
-    .then((result) => {
-      if (!result) {
-        deferred.reject(
-          "Cannot update User with id= " +
-          req.params.id +
-          " Maybe User was not found!"
-        );
-        return deferred.promise;
-      } else {
-        deferred.resolve({ message: "User was updated successfully." });
-      }
     })
-    .catch((error) => {
-      deferred.reject(error.message);
-    });
+
+  } else {
+    delete req.body.password
+    User.findByIdAndUpdate(req.params.id, req.body, { useFindAndModify: false })
+      .then((result) => {
+        if (!result) {
+          deferred.reject(
+            "Cannot update User with id= " +
+            req.params.id +
+            " Maybe User was not found!"
+          );
+          return deferred.promise;
+        } else {
+          deferred.resolve({ message: "User was updated successfully." });
+        }
+      })
+      .catch((error) => {
+        deferred.reject(error.message);
+      });
+  }
+
+
   return deferred.promise;
 };
 
@@ -246,6 +275,18 @@ const updatePassword = (req) => {
 
 
   return deferred.promise
+}
+
+const sendNotifToUser = (user, adminsdk) => {
+  console.log(user)
+  adminsdk.messaging().sendToDevice(user.device_token, {notification: {    title: "Un agent de propreté sopptas est proche de votre position",   body: "Préparez vos poubelles S.V.P!"   }}, { priority: "high", timeToLive: 60 * 60 * 24  })
+      .then( response => {
+       
+      })
+      .catch( error => {
+          console.log(error);
+      });
+
 }
 
 module.exports = { getUsers, setUser, addPointToUser, removePointFromUser, sendNotif, deleteUser, update, getUsersByPoint, sendForgetPassword, updatePassword }
