@@ -264,7 +264,7 @@ const userController = (express) => {
     }
   );
 
-  router.get('/sendNotif/:idPoint',
+  router.post('/sendNotif',
     function (req, res, next) {
       verifyToken(req, res)
         .then((decodedToken) => {
@@ -279,24 +279,24 @@ const userController = (express) => {
         })
         .done();
     },
-    function (req, res, next) {
-      isCollaboratorToken(req, res)
-        .then((result) => {
-          next();
-        })
-        .catch((error) => {
-          return res.status(401).json({
-            message: error,
-            error: "invalid token",
-          });
-        })
-        .done();
-    },
+    // function (req, res, next) {
+    //   isCollaboratorToken(req, res)
+    //     .then((result) => {
+    //       next();
+    //     })
+    //     .catch((error) => {
+    //       return res.status(401).json({
+    //         message: error,
+    //         error: "invalid token",
+    //       });
+    //     })
+    //     .done();
+    // },
 
     function (req, res, next) {
       sendNotif(req, res)
         .then(results => {
-          return res.status(201).json(results);
+          return res.status(201).json({message: "Notifications sent successfully"});
         })
         .catch(error => {
           return res.status(500).json({
