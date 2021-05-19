@@ -133,7 +133,17 @@ const userController = (express) => {
 
       User.findById(req.params.id)
         .select("points")
-        .populate('points._id')
+        .populate({
+          path: "points",
+          model: "Point",
+          populate: {
+            path: "_id",
+            populate:{
+              path:"zone",
+              model:"Zone"
+            }
+          },
+        })
 
         .then(result => {
           res.status(201).json({
