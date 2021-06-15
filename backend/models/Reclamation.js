@@ -9,7 +9,7 @@ const ReclamationSchema = new Schema({
   image:{ type:String, required:true },
   user: { type: Schema.Types.ObjectId, ref: 'User', required:true },
   category: { type: Schema.Types.ObjectId, ref: 'Category', required:true },
-  //comments:[{type: Schema.Types.ObjectId, ref: 'Comment', default:null}],
+  comments:[{type: Schema.Types.ObjectId, ref: 'Comment', default:null}],
   location: {
     type: {type: String, default: 'Point'},
     coordinates: {type: [Number], default: [0, 0]}
