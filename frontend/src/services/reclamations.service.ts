@@ -8,26 +8,31 @@ import { Reclamation } from '../models/Reclamation';
 })
 export class ReclamationsService {
 
-  
+
   constructor(private http: HttpClient) { }
 
-  getReclamations( pageNumber , pageSize ):  Observable<Reclamation[]> {
+  getReclamations(pageNumber, pageSize): Observable<Reclamation[]> {
     return this.http.get<Reclamation[]>('reclamations', {
       params: new HttpParams()
-      .set('page', pageNumber.toString())
-      .set('limit', pageSize.toString())
+        .set('page', pageNumber.toString())
+        .set('limit', pageSize.toString())
     });
   }
 
-  getReclamationById( id ):  Observable<Reclamation> {
-    return this.http.get<Reclamation>('reclamations/'+id)
-  }
-  
-  addResponse( id ):  Observable<Reclamation> {
-    return this.http.get<Reclamation>('reclamations/'+id)
+  getReclamationById(id): Observable<Reclamation> {
+    return this.http.get<Reclamation>('reclamations/' + id)
   }
 
-  
+  addResponse(id, comment): Observable<any> {
+    return this.http.put<Reclamation>('reclamations/' + id, { comment: comment })
+  }
+
+  deleteComment(id, id_comment): Observable<Reclamation> {
+
+    return this.http.delete<Reclamation>('reclamations/' + id + "/" + id_comment)
+  }
+
+
 
 }
 

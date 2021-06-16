@@ -19,22 +19,50 @@
   <agm-map [latitude]="this.reclamation.location.coordinates[1]" [longitude]="this.reclamation.location.coordinates[0]">
     <agm-marker [latitude]="this.reclamation.location.coordinates[1]" [longitude]="this.reclamation.location.coordinates[0]"></agm-marker>
   </agm-map> 
-    <!-- <div  *ngIf="reclamation.comments.length > 0" >
-      <h3>Réponses:</h3>
-      <p  *ngFor="let comment of reclamation.comments"  > {{comment}}</p>
-    </div>  
+      <!-- <div  *ngIf="reclamation.comments.length > 0" >
+        <h3>Réponses:</h3>
+        <p  *ngFor="let comment of reclamation.comments"  > {{comment.text}}</p>
+      </div>   -->
+      <div class="ui comments" >
+        <h3 class="ui dividing header">Commentaires</h3>
+        <div class="comment ui" *ngFor="let comment of reclamation.comments">
+          <a class="avatar">
+            <img src="assets/images/user-circle-solid.svg" alt="">
+          </a>
+          <div class="content">
+            <a class="author">{{comment?.user?.name}}</a>
+            <div class="metadata">
+              <span class="date">{{ comment?.updatedAt | date :'short'}}</span>
+            </div>
+            <div class="text">
+              {{comment.text}}
+            </div>
+            
+            <i class="trash icon" (click)="deleteComment(comment._id)"></i>
+          </div>
+          
 
-    <form class="d-flex justify-content-center" [formGroup]="reponseForm" (ngSubmit)="onSubmit()" *ngIf="reponseForm">
-        <div class="form-group d-block">
-      
-          <textarea formControlName="message" placeholder="This is an awesome comment box" rows="20" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
-          <button-component [type]="'submit'" [classes]="'btn-lg btn-block btn-primary default-bg radius'" [isdisabled]='reponseForm.invalid'>Rependre</button-component>
         </div>
-      
-        <div class="form-group d-block">
-        
-        </div>
-    </form> -->
+        <!-- <form class="ui reply form">
+          <div class="field">
+            <textarea></textarea>
+          </div>
+          <div class="ui blue labeled submit icon button">
+            <i class="icon edit"></i> Add Reply
+          </div>
+        </form> -->
+      </div>
+      <!-- <h3>Réponses:</h3>
+      <p   > jdgdjsjhd</p> -->
+
+      <form class="d-flex justify-content-center" [formGroup]="reponseForm" (ngSubmit)="onSubmit()" *ngIf="reponseForm">
+          <div class="form-group d-block">
+            <textarea formControlName="message"  rows="20" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+            <button-component [type]="'submit'" [classes]="'btn-lg btn-block btn-primary default-bg radius'" [isdisabled]='reponseForm.invalid'>Rependre</button-component>
+          </div>
+          <div class="form-group d-block">
+          </div>
+      </form>
 
 
-</div>        
+</div>

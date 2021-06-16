@@ -37,7 +37,7 @@ const sendNotif = (req, res) => {
   User.find({ "points._id": { $in: req.body.points } })
     .then(users => {
       users.forEach(element => {
-        sendNotifToUser(element, adminsdk)
+        sendNotifToUser(element, adminsdk, "Un agent de propreté sopptas est proche de votre position", "Préparez vos poubelles S.V.P!" )
       })
 
       //send notif user by user to do 
@@ -277,11 +277,9 @@ const updatePassword = (req) => {
   return deferred.promise
 }
 
-const sendNotifToUser = (user, adminsdk) => {
-  console.log(user)
-  adminsdk.messaging().sendToDevice(user.device_token, {notification: {    title: "Un agent de propreté sopptas est proche de votre position",   body: "Préparez vos poubelles S.V.P!"   }}, { priority: "high", timeToLive: 60 * 60 * 24  })
+const sendNotifToUser = (user, adminsdk, title, body ) => {
+  adminsdk.messaging().sendToDevice(user.device_token, {notification: {    title: title,   body: body   }}, { priority: "high", timeToLive: 60 * 60 * 24  })
       .then( response => {
-       
       })
       .catch( error => {
           console.log(error);
@@ -289,4 +287,4 @@ const sendNotifToUser = (user, adminsdk) => {
 
 }
 
-module.exports = { getUsers, setUser, addPointToUser, removePointFromUser, sendNotif, deleteUser, update, getUsersByPoint, sendForgetPassword, updatePassword }
+module.exports = { getUsers, setUser, addPointToUser, removePointFromUser, sendNotif, deleteUser, update, getUsersByPoint, sendForgetPassword, updatePassword, sendNotifToUser }
