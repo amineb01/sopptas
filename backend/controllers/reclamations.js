@@ -1,7 +1,7 @@
 var Reclamation = require('../models/Reclamation')
 var upload = require('../helpers/multerConfig')
 var { verifyToken, isCollaboratorToken }= require('../middlewares/token')
-var { setReclamation, getReclamations, getOneReclamation, update,removeCommentFromReclamation } = require('../middlewares/reclamations')
+var { setReclamation, getReclamations, getOneReclamation, update,removeCommentFromReclamation, getReclamationsByUser } = require('../middlewares/reclamations')
 
 const reclamationController = (express) => {
   const router = express.Router();
@@ -181,6 +181,40 @@ const reclamationController = (express) => {
 
     function (req, res, next) {
       removeCommentFromReclamation(req, res)
+        .then((result) => {
+          return res.status(200).json({
+            result: result,
+          });
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            message: "An error has occured",
+            error: error,
+          });
+        })
+        .done();
+    }
+
+  )
+  router.get('/by/user',
+  function (req, res, next) {
+    verifyToken(req, res)
+      .then((decodedToken) => {
+        req.headers.id = decodedToken.id;
+        req.headers.role = decodedToken.role;
+        next();
+      })
+      .catch((error) => {
+        return res.status(401).json({
+          message: error,
+          error: "invalid token",
+        });
+      })
+      .done();
+  },
+
+    function (req, res, next) {
+      getReclamationsByUser(req, res)
         .then((result) => {
           return res.status(200).json({
             result: result,

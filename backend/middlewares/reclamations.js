@@ -84,10 +84,11 @@ const update = (req, res) => {
               );
               return deferred.promise;
             } else {
-              User.findById(result_comment.user).then((user) => { 
-                sendNotifToUser(user, adminsdk, "Un agent de propreté sopptas a répondu à votre réclamation", "Sopptas" )
+              User.findById(result_comment.user).then((user) => {
+                console.log(user)
+                sendNotifToUser(user, adminsdk, "Un agent de propreté sopptas a répondu à votre réclamation", "Sopptas")
 
-               })
+              })
               deferred.resolve({ message: "Reclamation was updated successfully.", data: comment });
             }
           })
@@ -146,6 +147,21 @@ const removeCommentFromReclamation = (req, res) => {
     });
   return deferred.promise;
 }
+const getReclamationsByUser = (req, res) => {
+
+  deferred = Q.defer();
+  Reclamation.find({ user: req.headers.id })
+  .populate('category')
+    .then((data) => {
+
+      deferred.resolve({ data: data });
+
+    })
+    .catch((error) => {
+      deferred.reject(error.message);
+    });
+  return deferred.promise;
+}
 
 // const getReclamationsByCategory = (req, res) => {
 //   deferred = Q.defer();
@@ -158,4 +174,4 @@ const removeCommentFromReclamation = (req, res) => {
 //   return deferred.promise;
 // }
 
-module.exports = { getReclamations, setReclamation, getOneReclamation, update, removeCommentFromReclamation }
+module.exports = { getReclamations, setReclamation, getOneReclamation, update, removeCommentFromReclamation, getReclamationsByUser }
