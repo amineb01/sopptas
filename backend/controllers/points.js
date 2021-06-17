@@ -1,6 +1,6 @@
 var Point = require("../models/Point");
 
-var { getByRadius, findByZoneId, findNearestPointZone, findAll, addPoints} = require("../middlewares/points");
+var { getByRadius, findByZoneId, findNearestPointZone, findAll, addPoints, deletePoint } = require("../middlewares/points");
 var { verifyToken, isCollaboratorToken } = require("../middlewares/token");
 
 const pointController = (express) => {
@@ -160,95 +160,143 @@ const pointController = (express) => {
 
 
 
-router.get(
-  "/nearest/:latitude/:longitude",
-  function (req, res, next) {
-    verifyToken(req, res, next)
-      .then((decodedToken) => {
-        req.headers.id = decodedToken.id;
-        req.headers.role = decodedToken.role;
-        next();
-      })
-      .catch((error) => {
-        return res.status(401).json({
-          message: error,
-          error: "invalid token",
-        });
-      })
-      .done();
-  },
-
-  // function (req, res, next) {
-  //   isCollaboratorToken(req, res)
-  //     .then((result) => {
-  //       next();
-  //     })
-  //     .catch((error) => {
-  //       return res.status(401).json({
-  //         message: error,
-  //         error: "invalid token",
-  //       });
-  //     })
-  //     .done();
-  // },
-
-  function (req, res, next) {
-    findNearestPointZone(req, res)
-      .then((points) => {
-        return res.status(200).json({
-        zone: points[0].zone,
-
-        });
-      })
-      .catch((error) => {
-        return res.status(500).json({
-          message: "An error has occured",
-          error: error,
-        });
-      })
-      .done();
-  }
-);
-
-
-router.get(
-  "/byradius/:latitude/:longitude",
-  function (req, res, next) {
-    verifyToken(req, res, next)
-      .then((decodedToken) => {
-        req.headers.id = decodedToken.id;
-        req.headers.role = decodedToken.role;
-        next();
-      })
-      .catch((error) => {
-        return res.status(401).json({
-          message: error,
-          error: "invalid token",
-        });
-      })
-      .done();
-  },
-  function (req, res, next) {
-    console.log("seif")
-    getByRadius(req, res)
-      .then((points) => {
-        return res.status(200).json({
-          points:points,
-  
+  router.get(
+    "/nearest/:latitude/:longitude",
+    function (req, res, next) {
+      verifyToken(req, res, next)
+        .then((decodedToken) => {
+          req.headers.id = decodedToken.id;
+          req.headers.role = decodedToken.role;
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
           });
-      })
-      .catch((error) => {
-        console.log(error)
-        return res.status(500).json({
-          message: "An error has occuredzzzzzzzzzzz",
-          error: error,
-        });
-      })
-      .done();
-  }
-);
+        })
+        .done();
+    },
 
-return router;
+    // function (req, res, next) {
+    //   isCollaboratorToken(req, res)
+    //     .then((result) => {
+    //       next();
+    //     })
+    //     .catch((error) => {
+    //       return res.status(401).json({
+    //         message: error,
+    //         error: "invalid token",
+    //       });
+    //     })
+    //     .done();
+    // },
+
+    function (req, res, next) {
+      findNearestPointZone(req, res)
+        .then((points) => {
+          return res.status(200).json({
+            zone: points[0].zone,
+
+          });
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            message: "An error has occured",
+            error: error,
+          });
+        })
+        .done();
+    }
+  );
+
+
+  router.get(
+    "/byradius/:latitude/:longitude",
+    function (req, res, next) {
+      verifyToken(req, res, next)
+        .then((decodedToken) => {
+          req.headers.id = decodedToken.id;
+          req.headers.role = decodedToken.role;
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
+          });
+        })
+        .done();
+    },
+    function (req, res, next) {
+      console.log("seif")
+      getByRadius(req, res)
+        .then((points) => {
+          return res.status(200).json({
+            points: points,
+
+          });
+        })
+        .catch((error) => {
+          console.log(error)
+          return res.status(500).json({
+            message: "An error has occuredzzzzzzzzzzz",
+            error: error,
+          });
+        })
+        .done();
+    }
+  );
+  router.delete(
+    "/:id",
+    function (req, res, next) {
+      verifyToken(req, res)
+        .then((decodedToken) => {
+          req.headers.id = decodedToken.id;
+          req.headers.role = decodedToken.role;
+          next();
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            message: error,
+            error: "invalid token",
+          });
+        })
+        .done();
+    },
+
+    // function (req, res, next) {
+    //   isAdminToken(req, res)
+    //     .then((result) => {
+    //       next();
+    //     })
+    //     .catch((error) => {
+    //       return res.status(401).json({
+    //         message: error,
+    //         error: "invalid token",
+    //       });
+    //     })
+    //     .done();
+    // },
+    function (req, res, next) {
+      deletePoint(req)
+        .then((result) => {
+          return res.status(200).json({
+            result: result,
+          });
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            message: "An error has occured",
+            error: error,
+          });
+        })
+        .done();
+    }
+  );
+
+
+  return router;
 };
 
 
