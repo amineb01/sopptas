@@ -1,52 +1,64 @@
 <h1> Points disponibles </h1>
 <form class="search-post-form">
-  
+
   <mat-form-field class="full-width">
     <mat-label>Point</mat-label>
     <input #input matInput placeholder="Numéro" class="search-post-form">
   </mat-form-field>
   <div class="select-container">
-    <select class="select" (change)="selectChanged($event.target.value)" >
+    <select class="select" (change)="selectChanged($event.target.value)">
       <option *ngFor="let item of zonesList; let i =index" [selected]='i==0' [value]="item._id">{{item.name}}</option>
     </select>
   </div>
 
 </form>
 <div class="mat-elevation-z8">
-  <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort >
+  <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort>
 
     <!-- Position Column -->
     <ng-container matColumnDef="_id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header > Id. </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Id. </th>
       <td mat-cell *matCellDef="let element"> {{element?._id}} </td>
     </ng-container>
 
-       <!-- zone Column -->
-       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Numéro </th>
-        <td mat-cell *matCellDef="let element"> {{element?.number}} </td>
-      </ng-container>
+    <!-- zone Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro </th>
+      <td mat-cell *matCellDef="let element"> {{element?.number}} </td>
+    </ng-container>
 
     <!-- latitude Latitude -->
     <ng-container matColumnDef="latitude">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header > Latitude </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Latitude </th>
       <td mat-cell *matCellDef="let element"> {{element?.location.coordinates[1]}} </td>
     </ng-container>
 
-      <!-- longitude Column -->
-      <ng-container matColumnDef="longitude">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Longitude </th>
-        <td mat-cell *matCellDef="let element"> {{element?.location.coordinates[0]}} </td>
-      </ng-container>
-  
-      
+    <!-- longitude Column -->
+    <ng-container matColumnDef="longitude">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Longitude </th>
+      <td mat-cell *matCellDef="let element"> {{element?.location.coordinates[0]}} </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+      <td mat-cell *matCellDef="let element">
+        <button class="mat-raised-button" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>dehaze</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="delete(element._id)">
+            <mat-icon>delete_forever</mat-icon>
+            <span>Supprimer</span>
+          </button>
+
+        </mat-menu>
+      </td>
+    </ng-container>
+
+
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator #paginator
-  [length]="dataSource.count$ | async"
-  [pageSize]="10"
-  [pageSizeOptions]="[10, 20, 50]">
+  <mat-paginator #paginator [length]="dataSource.count$ | async" [pageSize]="10" [pageSizeOptions]="[10, 20, 50]">
   </mat-paginator>
 </div>

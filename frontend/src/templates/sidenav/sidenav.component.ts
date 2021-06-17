@@ -13,7 +13,7 @@ export class SidenavComponent implements OnDestroy {
 
   mobileQuery: MediaQueryList;
 
-  fillerNav = ['users', 'reclamations', 'categories',  'zones', 'points'];
+  fillerNav = [{display: 'Utilisateurs', path:"users"}, {display:'Réclamations',path:"reclamations"}, {display: 'Catégories', path:"categories" },  {display: 'Zones', path: "zones"}, {display: 'Points', path:"points"}];
 
 
 

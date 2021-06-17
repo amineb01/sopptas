@@ -202,7 +202,28 @@ const getByRadius = (req) =>
 
 }
 
+const deletePoint = (req, res) => {
+  const id = req.params.id;
+  deferred = Q.defer();
+  Point.findByIdAndRemove(id)
+    .then((data) => {
+      if (!data) {
+        deferred.reject(
+          "Cannot delete Point with id= " + req.params.id + " Maybe Point was not found!"
+        );
+        return deferred.promise;
+      } else {
+        deferred.resolve({ message: "Point was deleted successfully." });
+      }
+    })
+    .catch((error) => {
+      deferred.reject(error.message);
+    });
+  return deferred.promise;
+};
 
 
 
-module.exports = { setPoint, findByZoneId, findNearestPointZone, findAll, addPoints, getByRadius };
+
+
+module.exports = { setPoint, findByZoneId, findNearestPointZone, findAll, addPoints, getByRadius, deletePoint };

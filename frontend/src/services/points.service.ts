@@ -20,5 +20,8 @@ export class PointsService {
             .set('_limit', pageSize.toString())
     });
   }
+  deletePoint(id){
+    return this.http.delete<any>(`points/${id}`,{})
+  }
 
 }

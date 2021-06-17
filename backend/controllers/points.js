@@ -1,6 +1,6 @@
 var Point = require("../models/Point");
 
-var { getByRadius, findByZoneId, findNearestPointZone, findAll, addPoints} = require("../middlewares/points");
+var { getByRadius, findByZoneId, findNearestPointZone, findAll, addPoints, deletePoint} = require("../middlewares/points");
 var { verifyToken, isCollaboratorToken } = require("../middlewares/token");
 
 const pointController = (express) => {
@@ -241,6 +241,53 @@ router.get(
         console.log(error)
         return res.status(500).json({
           message: "An error has occuredzzzzzzzzzzz",
+          error: error,
+        });
+      })
+      .done();
+  }
+);
+router.delete(
+  "/:id",
+  function (req, res, next) {
+    verifyToken(req, res)
+      .then((decodedToken) => {
+        req.headers.id = decodedToken.id;
+        req.headers.role = decodedToken.role;
+        next();
+      })
+      .catch((error) => {
+        return res.status(401).json({
+          message: error,
+          error: "invalid token",
+        });
+      })
+      .done();
+  },
+
+  // function (req, res, next) {
+  //   isAdminToken(req, res)
+  //     .then((result) => {
+  //       next();
+  //     })
+  //     .catch((error) => {
+  //       return res.status(401).json({
+  //         message: error,
+  //         error: "invalid token",
+  //       });
+  //     })
+  //     .done();
+  // },
+  function (req, res, next) {
+    deletePoint(req)
+      .then((result) => {
+        return res.status(200).json({
+          result: result,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          message: "An error has occured",
           error: error,
         });
       })
