@@ -17,7 +17,6 @@ services:
      - ./backend/.env
     depends_on:
      - mongo
-     
   mongo:
     container_name: mongo
     image: mongo
@@ -25,7 +24,6 @@ services:
       - "27017:27017"
     volumes:
       - datavolume_sopptas:/data/db
-      
 
   front:
     container_name: frontend-angular
@@ -35,7 +33,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
- 
+
   db-fixture:
     build: ./backend/db-fixture
     container_name: db-fixture
