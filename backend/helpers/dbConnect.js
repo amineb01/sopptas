@@ -6,8 +6,10 @@ dotenv.config();
 const db_name = config.DBHost
 const db_server = process.env.DB_SERVER
 const db_port = process.env.DB_PORT
+const timeout = 10 * 1000;
 mongoose.connect(`mongodb://${db_server}:${db_port}/${db_name}`, {
     useNewUrlParser: true,
+    connectTimeoutMS: timeout,
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true
