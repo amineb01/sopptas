@@ -34,13 +34,13 @@ services:
       - "80:80"
       - "443:443"
 
-  db-fixture:
-    build: ./backend/db-fixture
-    container_name: db-fixture
-    links:
-      - mongo
-    depends_on:
-      - mongo
+  # db-fixture:
+  #   build: ./backend/db-fixture
+  #   container_name: db-fixture
+  #   links:
+  #     - mongo
+  #   depends_on:
+  #     - mongo
 
 volumes:
   datavolume_sopptas:
