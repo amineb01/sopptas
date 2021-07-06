@@ -10,7 +10,7 @@ services:
       - ./backend/models:/app/models
       - ./backend/middlewares:/app/middlewares
       - ./backend/controllers:/app/controllers
-      # - storage:/app/uploads
+      - storage:/app/uploads
     links:
       - mongo
     env_file:
@@ -44,5 +44,5 @@ services:
 
 volumes:
   datavolume_sopptas:
-  # storage:
-  #   external: true
+  storage:
+    external: true
